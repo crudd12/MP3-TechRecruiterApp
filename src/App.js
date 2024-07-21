@@ -3,7 +3,7 @@ import './App.css';
 import NavBar from './Components/NavBar';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import SignIn from './Components/SignIn';
-import SignUp from './Components/SignUp'
+import SignUp from './Components/SignUp';
 // import AppAppBar from './Components/AppAppBar';
 import LandingPage from './Components/LandingPage';
 import DeveloperView from './Components/DeveloperView';
