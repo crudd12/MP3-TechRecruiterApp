@@ -1,6 +1,6 @@
 // import logo from './logo.svg';
 import './App.css';
-import NavBar from './Components/NavBar';
+// import NavBar from './Components/NavBar';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import SignIn from './Components/SignIn';
 import SignUp from './Components/SignUp';
@@ -14,7 +14,7 @@ function App() {
   return (
     <div className="App">
       <Router>
-      <NavBar />
+      {/* <NavBar /> */}
         <Routes>
           <Route path="/" element={<LandingPage />} />
           <Route path="/signin" element={<SignIn />} />

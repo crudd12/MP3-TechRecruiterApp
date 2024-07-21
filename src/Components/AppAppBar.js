@@ -18,6 +18,9 @@ const logoStyle = {
   width: '140px',
   height: 'auto',
   cursor: 'pointer',
+  color: '#1976D2',
+  fontWeight: 'bold',
+  textDecoration: 'none'
 };
 
 function AppAppBar({ mode, toggleColorMode }) {
@@ -27,19 +30,19 @@ function AppAppBar({ mode, toggleColorMode }) {
     setOpen(newOpen);
   };
 
-  const scrollToSection = (sectionId) => {
-    const sectionElement = document.getElementById(sectionId);
-    const offset = 128;
-    if (sectionElement) {
-      const targetScroll = sectionElement.offsetTop - offset;
-      sectionElement.scrollIntoView({ behavior: 'smooth' });
-      window.scrollTo({
-        top: targetScroll,
-        behavior: 'smooth',
-      });
-      setOpen(false);
-    }
-  };
+  // const scrollToSection = (sectionId) => {
+  //   const sectionElement = document.getElementById(sectionId);
+  //   const offset = 128;
+  //   if (sectionElement) {
+  //     const targetScroll = sectionElement.offsetTop - offset;
+  //     sectionElement.scrollIntoView({ behavior: 'smooth' });
+  //     window.scrollTo({
+  //       top: targetScroll,
+  //       behavior: 'smooth',
+  //     });
+  //     setOpen(false);
+  //   }
+  // };
 
   return (
     <div>
@@ -84,13 +87,14 @@ function AppAppBar({ mode, toggleColorMode }) {
                 px: 0,
               }}
             >
-              <img
+              {/* <img
                 src={
                   'https://assets-global.website-files.com/61ed56ae9da9fd7e0ef0a967/61f12e6faf73568658154dae_SitemarkDefault.svg'
                 }
                 style={logoStyle}
                 alt="logo of sitemark"
-              />
+              /> */}
+              <p style={logoStyle}><a href='/'>JEDC Recruiting</a></p>
               <Box sx={{ display: { xs: 'none', md: 'flex' } }}>
                 {/* <MenuItem
                   onClick={() => scrollToSection('features')}
@@ -190,7 +194,7 @@ function AppAppBar({ mode, toggleColorMode }) {
                   >
                     <ToggleColorMode mode={mode} toggleColorMode={toggleColorMode} />
                   </Box>
-                  <MenuItem onClick={() => scrollToSection('features')}>
+                  {/* <MenuItem onClick={() => scrollToSection('features')}>
                     Features
                   </MenuItem>
                   <MenuItem onClick={() => scrollToSection('testimonials')}>
@@ -202,7 +206,7 @@ function AppAppBar({ mode, toggleColorMode }) {
                   <MenuItem onClick={() => scrollToSection('pricing')}>
                     Pricing
                   </MenuItem>
-                  <MenuItem onClick={() => scrollToSection('faq')}>FAQ</MenuItem>
+                  <MenuItem onClick={() => scrollToSection('faq')}>FAQ</MenuItem> */}
                   <Divider />
                   <MenuItem>
                     <Button
