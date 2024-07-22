@@ -7,21 +7,22 @@ import Toolbar from '@mui/material/Toolbar';
 import Button from '@mui/material/Button';
 import Container from '@mui/material/Container';
 import Divider from '@mui/material/Divider';
-// import Typography from '@mui/material/Typography';
+import Typography from '@mui/material/Typography';
 import MenuItem from '@mui/material/MenuItem';
 import Drawer from '@mui/material/Drawer';
 import MenuIcon from '@mui/icons-material/Menu';
-import ToggleColorMode from './ToggleColorMode';
-// import RecruiterImage from '../recruiter_image.jpg'
+// import ToggleColorMode from './ToggleColorMode';
+import ScreenSearchDesktopRoundedIcon from '@mui/icons-material/ScreenSearchDesktopRounded';
+import { useNavigate } from 'react-router-dom';
 
-const logoStyle = {
-  width: '140px',
-  height: 'auto',
-  cursor: 'pointer',
-  color: '#1976D2',
-  fontWeight: 'bold',
-  textDecoration: 'none'
-};
+// const logoStyle = {
+//   width: '140px',
+//   height: 'auto',
+//   cursor: 'pointer',
+//   color: '#1976D2',
+//   fontWeight: 'bold',
+//   textDecoration: 'none'
+// };
 
 function AppAppBar({ mode, toggleColorMode }) {
   const [open, setOpen] = React.useState(false);
@@ -43,6 +44,8 @@ function AppAppBar({ mode, toggleColorMode }) {
   //     setOpen(false);
   //   }
   // };
+  // const Navigation = () => {
+    const navigate = useNavigate();
 
   return (
     <div>
@@ -94,17 +97,17 @@ function AppAppBar({ mode, toggleColorMode }) {
                 style={logoStyle}
                 alt="logo of sitemark"
               /> */}
-              <p style={logoStyle}><a href='/'>JEDC Recruiting</a></p>
+              <a href='/'><ScreenSearchDesktopRoundedIcon fontSize='large' sx={{ color: '#1976d2', marginLeft: '25px'}} /></a>
               <Box sx={{ display: { xs: 'none', md: 'flex' } }}>
-                {/* <MenuItem
-                  onClick={() => scrollToSection('features')}
+                <MenuItem
+                  onClick={() => navigate('/')}
                   sx={{ py: '6px', px: '12px' }}
                 >
-                  <Typography variant="body2" color="text.primary">
-                    Features
+                  <Typography variant="body2" color="text.primary" >
+                    JEDC Recruiting
                   </Typography>
                 </MenuItem>
-                <MenuItem
+                {/* <MenuItem
                   onClick={() => scrollToSection('testimonials')}
                   sx={{ py: '6px', px: '12px' }}
                 >
@@ -145,7 +148,7 @@ function AppAppBar({ mode, toggleColorMode }) {
                 alignItems: 'center',
               }}
             >
-              <ToggleColorMode mode={mode} toggleColorMode={toggleColorMode} />
+              {/* <ToggleColorMode mode={mode} toggleColorMode={toggleColorMode} /> */}
               <Button
                 color="primary"
                 variant="text"
@@ -192,7 +195,7 @@ function AppAppBar({ mode, toggleColorMode }) {
                       flexGrow: 1,
                     }}
                   >
-                    <ToggleColorMode mode={mode} toggleColorMode={toggleColorMode} />
+                    {/* <ToggleColorMode mode={mode} toggleColorMode={toggleColorMode} /> */}
                   </Box>
                   {/* <MenuItem onClick={() => scrollToSection('features')}>
                     Features

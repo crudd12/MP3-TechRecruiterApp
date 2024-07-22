@@ -60,9 +60,11 @@ export default function Hero() {
             color="text.secondary"
             sx={{ alignSelf: 'center', width: { sm: '100%', md: '80%' } }}
           >
-            Explore our cutting-edge dashboard, delivering high-quality solutions
-            tailored to your needs. Elevate your experience with top-tier features
-            and services.
+            Introducing JEDC Recruiting, the ultimate search engine for IT recruiters seeking top developer talent.
+            Our platform empowers you to effortlessly locate and evaluate highly qualified developers with unmatched precision.
+            Leveraging advanced search algorithms and real-time data, JEDC Recruiting provides a comprehensive and intuitive search experience,
+            helping you quickly find candidates who match your specific requirements and preferences.
+            Transform your hiring strategy and connect with the best developers faster with JEDC Recruiting.
           </Typography>
           {/* <Stack
             direction={{ xs: 'column', sm: 'row' }}
@@ -71,7 +73,7 @@ export default function Hero() {
             useFlexGap
             sx={{ pt: 2, width: { xs: '100%', sm: 'auto' } }}
           > */}
-            {/* <TextField
+          {/* <TextField
               id="outlined-basic"
               hiddenLabel
               size="small"
@@ -83,7 +85,7 @@ export default function Hero() {
                 'aria-label': 'Enter your email address',
               }}
             /> */}
-            {/* <Button variant="contained" color="primary">
+          {/* <Button variant="contained" color="primary">
               Start now
             </Button> */}
           {/* </Stack> */}
@@ -104,10 +106,12 @@ export default function Hero() {
             width: '100%',
             backgroundImage:
               theme.palette.mode === 'light'
-                ? 'url("/static/images/templates/templates-images/hero-light.png")'
-                : 'url("/static/images/templates/templates-images/hero-dark.png")',
+                ? 'url("https://media.istockphoto.com/id/1061305620/vector/human-resources-concept-target-market-and-audience-focus-group-public-relations-vector-icon.jpg?s=612x612&w=0&k=20&c=Jhtkyf_iNwd68YSLjZniIIaUNfqd9nkM24fWhX-Valg=")'
+                : 'url("https://media.istockphoto.com/id/1061305620/vector/human-resources-concept-target-market-and-audience-focus-group-public-relations-vector-icon.jpg?s=612x612&w=0&k=20&c=Jhtkyf_iNwd68YSLjZniIIaUNfqd9nkM24fWhX-Valg=")',
             backgroundSize: 'cover',
             borderRadius: '10px',
+            backgroundPosition: 'center',
+            backgroundRepeat: 'no-repeat',
             outline: '1px solid',
             outlineColor:
               theme.palette.mode === 'light'

@@ -16,7 +16,7 @@ import Highlights from './Highlights';
 // import Features from './Features';
 import Testimonials from './Testimonials';
 import FAQ from './FAQ';
-import Footer from './Footer';
+// import Footer from './Footer';
 // import getLPTheme from '../getLPTheme';
 
 // function ToggleCustomTheme({ showCustomTheme, toggleCustomTheme }) {
@@ -91,7 +91,7 @@ export default function LandingPage() {
         <Divider />
         <FAQ />
         <Divider />
-        <Footer /> 
+        {/* <Footer />  */}
       </Box>
       {/* <ToggleCustomTheme
         showCustomTheme={showCustomTheme}

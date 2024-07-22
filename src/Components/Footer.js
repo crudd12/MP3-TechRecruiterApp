@@ -1,27 +1,27 @@
 import * as React from 'react';
 import Box from '@mui/material/Box';
-import Button from '@mui/material/Button';
+// import Button from '@mui/material/Button';
 import Container from '@mui/material/Container';
 import IconButton from '@mui/material/IconButton';
 import Link from '@mui/material/Link';
 import Stack from '@mui/material/Stack';
-import TextField from '@mui/material/TextField';
+// import TextField from '@mui/material/TextField';
 import Typography from '@mui/material/Typography';
 
 import FacebookIcon from '@mui/icons-material/GitHub';
 import LinkedInIcon from '@mui/icons-material/LinkedIn';
 import TwitterIcon from '@mui/icons-material/X';
 
-const logoStyle = {
-  width: '140px',
-  height: 'auto',
-};
+// const logoStyle = {
+//   width: '140px',
+//   height: 'auto',
+// };
 
 function Copyright() {
   return (
     <Typography variant="body2" color="text.secondary" mt={1}>
       {'Copyright © '}
-      <Link href="https://mui.com/">Sitemark&nbsp;</Link>
+      <Link href="/">JEDC Recruiting&nbsp;</Link>
       {new Date().getFullYear()}
     </Typography>
   );
@@ -47,7 +47,7 @@ export default function Footer() {
           justifyContent: 'space-between',
         }}
       >
-        <Box
+        {/* <Box
           sx={{
             display: 'flex',
             flexDirection: 'column',
@@ -167,7 +167,7 @@ export default function Footer() {
           borderTop: '1px solid',
           borderColor: 'divider',
         }}
-      >
+      > */}
         <div>
           <Link color="text.secondary" href="#">
             Privacy Policy
@@ -191,7 +191,7 @@ export default function Footer() {
         >
           <IconButton
             color="inherit"
-            href="https://github.com/mui"
+            href="https://github.com/"
             aria-label="GitHub"
             sx={{ alignSelf: 'center' }}
           >
@@ -199,7 +199,7 @@ export default function Footer() {
           </IconButton>
           <IconButton
             color="inherit"
-            href="https://x.com/MaterialUI"
+            href="https://x.com/"
             aria-label="X"
             sx={{ alignSelf: 'center' }}
           >
@@ -207,7 +207,7 @@ export default function Footer() {
           </IconButton>
           <IconButton
             color="inherit"
-            href="https://www.linkedin.com/company/mui/"
+            href="https://www.linkedin.com/"
             aria-label="LinkedIn"
             sx={{ alignSelf: 'center' }}
           >

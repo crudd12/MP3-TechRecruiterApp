@@ -8,13 +8,13 @@ import SignUp from './Components/SignUp';
 import LandingPage from './Components/LandingPage';
 import DeveloperView from './Components/DeveloperView';
 import RecruiterView from './Components/RecruiterView';
+import Footer from './Components/Footer';
 
 
 function App() {
   return (
     <div className="App">
       <Router>
-      {/* <NavBar /> */}
         <Routes>
           <Route path="/" element={<LandingPage />} />
           <Route path="/signin" element={<SignIn />} />
@@ -22,6 +22,7 @@ function App() {
           <Route path="/developer" element={<DeveloperView />} />
           <Route path="/recruiter" element={<RecruiterView />} />
         </Routes>
+        <Footer />
       </Router>
     </div>
   );
