@@ -6,12 +6,14 @@ import { ThemeProvider, createTheme } from '@mui/material/styles';
 import AppAppBar from './AppAppBar'
 import { alpha } from '@mui/material';
 import Container from '@mui/material/Container';
+import SearchBar from './SearchBar';
+import DeveloperList from './DeveloperList';
 
 // const headerStyle = {
 //  paddingTop: '110px'
 // };
 
-export default function DeveloperView() {
+export default function RecruiterView() {
   const [mode, setMode] = React.useState('light');
 
   const defaultTheme = createTheme({ palette: { mode } });
@@ -47,7 +49,9 @@ export default function DeveloperView() {
           }}
         >
       <Box sx={{ bgcolor: 'background.default' }}>
-        <h1>this is the recruiter view page</h1>
+        <h2>Search Programming Languages</h2>
+        <SearchBar />
+        <DeveloperList />
       </Box>
       </Container>
       </Box>
