@@ -3,12 +3,13 @@ import Modal from '@mui/material/Modal';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import TextField from '@mui/material/TextField';
+import Autocomplete from '@mui/material/Autocomplete';
 
 function DeveloperEdit({ developerInfo, onSave, onClose }) {
     const [name, setName] = useState(developerInfo.name);
     const [description, setDescription] = useState(developerInfo.description);
     const [projects, setProjects] = useState(developerInfo.projects);
-    const [languages, setLanguages] = useState(developerInfo.languages);
+    const [languages, setLanguages] = useState(developerInfo.languages || []);
 
     const handleSave = () => {
         onSave({
@@ -18,6 +19,19 @@ function DeveloperEdit({ developerInfo, onSave, onClose }) {
             languages
         });
     };
+
+    const programmingLanguages = [
+        { name: "HTML" },
+        { name: "CSS" },
+        { name: "JavaScript" },
+        { name: "Java" },
+        { name: "Python" },
+        { name: "C++" },
+        { name: "C" },
+        { name: "Swift" },
+        { name: "Ruby" },
+        { name: "Rust" },
+    ];
 
     return (
         <Modal
@@ -64,13 +78,17 @@ function DeveloperEdit({ developerInfo, onSave, onClose }) {
                     value={projects}
                     onChange={(e) => setProjects(e.target.value)}
                 />
-                <TextField
-                    fullWidth
-                    margin="normal"
-                    label="Edit Languages"
-                    variant="outlined"
+                <Autocomplete
+                    multiple
+                    limitTags={3}
+                    disablePortal
+                    id="combo-box-demo"
+                    options={programmingLanguages}
+                    getOptionLabel={(option) => option.name}
                     value={languages}
-                    onChange={(e) => setLanguages(e.target.value)}
+                    onChange={(event, newValue) => setLanguages(newValue)}
+                    sx={{ width: 300 }}
+                    renderInput={(params) => <TextField {...params} label="Programming Languages" />}
                 />
                 <Button onClick={handleSave} variant="contained" color="primary">
                     Save
