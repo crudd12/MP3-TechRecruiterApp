@@ -6,6 +6,10 @@ import { ThemeProvider, createTheme } from '@mui/material/styles';
 import AppAppBar from './AppAppBar'
 import { alpha } from '@mui/material';
 import Container from '@mui/material/Container';
+import { Button } from '@mui/material';
+import DeveloperEdit from './DeveloperEdit';
+import frogProfile from './img/frog-profile.jpg';
+import { useState }from 'react';
 
 // const headerStyle = {
 //  paddingTop: '110px'
@@ -18,6 +22,24 @@ export default function DeveloperView() {
 
     const toggleColorMode = () => {
       setMode((prev) => (prev === 'dark' ? 'light' : 'dark'));
+    };
+
+   const [isEditing, setIsEditing] = useState(false);
+
+    const [developerInfo, setDeveloperInfo] = useState({
+        name: '',
+        description: '',
+        projects: '',
+        languages: ''
+    });
+
+    const handleButtonClick = () => {
+        setIsEditing(true);
+    };
+
+    const handleSave = (newInfo) => {
+        setDeveloperInfo(newInfo);
+        setIsEditing(false);
     };
 
   return (
@@ -47,7 +69,93 @@ export default function DeveloperView() {
           }}
         >
       <Box sx={{ bgcolor: 'background.default' }}>
-        <h1>this is the developer view page</h1>
+      <div>
+            <Box 
+                margin={10}
+                sx={{ 
+                    border: '2px solid red', 
+                    padding: 2,
+                    position: 'relative',
+                }}
+            >
+                <Box
+                    sx={{ 
+                        display: 'flex', 
+                        gap: 2,
+                    }}
+                >
+                    <Box
+                        sx={{
+                            border: '2px solid grey',
+                            height: 400,
+                            width: 500,
+                            display: 'flex',
+                            flexDirection: 'column',
+                            alignItems: 'center',
+                            justifyContent: 'center',
+                        }}
+                    >
+                        <img src={frogProfile} alt="Frog Profile" style={{ width: '100%', height: 'auto' }} />
+                        <h2>{developerInfo.name}</h2>
+                    </Box>
+                    <Box
+                        sx={{
+                            border: '2px solid grey',
+                            height: 300,
+                            width: 500,
+                            display: 'flex',
+                            flexDirection: 'column',
+                            alignItems: 'flex-start',
+                            justifyContent: 'center',
+                            position: 'relative',
+                            marginLeft: 'auto',
+                        }}
+                    >
+                        <Button
+                            variant='contained'
+                            sx={{
+                                position: 'absolute',
+                                top: 10,
+                                right: 10,
+                            }}
+                            onClick={handleButtonClick}
+                        >
+                            Edit
+                        </Button>
+                        <h2>{developerInfo.languages}</h2>
+                    </Box>
+                </Box>
+                <Box
+                    sx={{
+                        border: '2px solid grey',
+                        height: 400,
+                        marginTop: 2,
+                        display: 'flex',
+                        flexDirection: 'column',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                    }}
+                >
+                    <h2>Descripton</h2>
+                    <p>{developerInfo.description}</p>
+                </Box>
+                <Box
+                    sx={{
+                        border: '2px solid grey',
+                        height: 400,
+                        marginTop: 2,
+                        display: 'flex',
+                        flexDirection: 'column',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                    }}
+                >
+                    <h2>Projects</h2>
+                    <p>{developerInfo.projects}</p>
+                </Box>
+            </Box>
+            {isEditing && <DeveloperEdit developerInfo={developerInfo} onSave={handleSave} onClose={() => setIsEditing(false)} />}
+        </div>
       </Box>
       </Container>
       </Box>
