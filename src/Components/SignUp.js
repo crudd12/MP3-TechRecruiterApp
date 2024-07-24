@@ -32,13 +32,36 @@ import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 // }
 
 const SignUp = () => {
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
-    console.log({
+
+    const userData = {
+      firstName: data.get("firstName"),
+      lastName: data.get("lastName"),
       email: data.get("email"),
       password: data.get("password"),
-    });
+      role: data.get("role")
+    };
+
+    try {
+      const response = await fetch('http://localhost:3001/authentication/signup', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(userData)
+      });
+
+      if (!response.ok) {
+        throw new Error('Network response was not ok');
+      }
+
+      const result = await response.json();
+      console.log(result);
+    } catch (error) {
+      console.error('There was a problem with your fetch operation:', error);
+    }
   };
 
   return (
@@ -106,7 +129,7 @@ const SignUp = () => {
               <RadioGroup
                 row
                 aria-labelledby="demo-form-control-label-placement"
-                name="position"
+                name="role"
                 defaultValue="top"
               >
                 <FormControlLabel
