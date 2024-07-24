@@ -6,14 +6,18 @@ import TextField from '@mui/material/TextField';
 import Autocomplete from '@mui/material/Autocomplete';
 
 function DeveloperEdit({ developerInfo, onSave, onClose }) {
-    const [name, setName] = useState(developerInfo.name);
+    const [firstName, setFirstName] = useState(developerInfo.firstName);
+    const [lastName, setLastName] = useState(developerInfo.lastName);
+    const [email, setEmail] = useState(developerInfo.email)
     const [description, setDescription] = useState(developerInfo.description);
     const [projects, setProjects] = useState(developerInfo.projects);
     const [languages, setLanguages] = useState(developerInfo.languages || []);
 
     const handleSave = () => {
         onSave({
-            name,
+            firstName,
+            lastName,
+            email,
             description,
             projects,
             languages
@@ -57,13 +61,30 @@ function DeveloperEdit({ developerInfo, onSave, onClose }) {
                 <TextField
                     fullWidth
                     margin="normal"
-                    label="Edit Name"
+                    label="Edit First Name"
                     variant="outlined"
-                    value={name}
-                    onChange={(e) => setName(e.target.value)}
+                    value={firstName}
+                    onChange={(e) => setFirstName(e.target.value)}
                 />
                 <TextField
                     fullWidth
+                    margin="normal"
+                    label="Edit Last Name"
+                    variant="outlined"
+                    value={lastName}
+                    onChange={(e) => setLastName(e.target.value)}
+                />
+                  <TextField
+                    fullWidth
+                    margin="normal"
+                    label="Edit Email"
+                    variant="outlined"
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
+                />
+                <TextField
+                    fullWidth
+                    multiline
                     margin="normal"
                     label="Edit Description"
                     variant="outlined"

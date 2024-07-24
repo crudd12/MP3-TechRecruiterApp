@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React, { useState } from 'react';
 import CssBaseline from '@mui/material/CssBaseline';
 import Box from '@mui/material/Box';
 import Divider from '@mui/material/Divider';
@@ -9,7 +9,6 @@ import Container from '@mui/material/Container';
 import { Button } from '@mui/material';
 import DeveloperEdit from './DeveloperEdit';
 import frogProfile from './img/frog-profile.jpg';
-import { useState } from 'react';
 
 export default function DeveloperView() {
     const [mode, setMode] = React.useState('light');
@@ -17,13 +16,15 @@ export default function DeveloperView() {
     const defaultTheme = createTheme({ palette: { mode } });
 
     const toggleColorMode = () => {
-      setMode((prev) => (prev === 'dark' ? 'light' : 'dark'));
+        setMode((prev) => (prev === 'dark' ? 'light' : 'dark'));
     };
 
     const [isEditing, setIsEditing] = useState(false);
 
     const [developerInfo, setDeveloperInfo] = useState({
-        name: '',
+        firstName: '',
+        lastName: '',
+        email: '',
         description: '',
         projects: '',
         languages: []
@@ -36,6 +37,12 @@ export default function DeveloperView() {
     const handleSave = (newInfo) => {
         setDeveloperInfo(newInfo);
         setIsEditing(false);
+    };
+
+    const renderDescription = (text) => {
+        return text.split('\n').map((paragraph, index) => (
+            <p key={index}>{paragraph}</p>
+        ));
     };
 
     return (
@@ -91,7 +98,8 @@ export default function DeveloperView() {
                                         }}
                                     >
                                         <img src={frogProfile} alt="Frog Profile" style={{ width: '100%', height: 'auto' }} />
-                                        <h2>{developerInfo.name}</h2>
+                                        <h2>{developerInfo.firstName} {developerInfo.lastName}</h2>
+                                        <p>Contact: {developerInfo.email}</p>
                                     </Box>
                                     <Box
                                         sx={{
@@ -134,7 +142,7 @@ export default function DeveloperView() {
                                     }}
                                 >
                                     <h2>Description</h2>
-                                    <p>{developerInfo.description}</p>
+                                    {renderDescription(developerInfo.description)}
                                 </Box>
                                 <Box
                                     sx={{
