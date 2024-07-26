@@ -12,6 +12,7 @@ import {
 } from "@mui/material";
 import { Link, Grid, Box, Typography, Container } from "@mui/material";
 import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
+import { useNavigate, Link as RouterLink } from 'react-router-dom';
 
 // function Copyright(props) {
 //   return (
@@ -32,13 +33,39 @@ import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 // }
 
 const SignUp = () => {
-  const handleSubmit = (event) => {
+  const navigate = useNavigate();
+
+  const handleSubmit = async (event) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
-    console.log({
+
+    const userData = {
+      firstName: data.get("firstName"),
+      lastName: data.get("lastName"),
       email: data.get("email"),
       password: data.get("password"),
-    });
+      role: data.get("role")
+    };
+
+    try {
+      const response = await fetch('http://localhost:3001/authentication/signup', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(userData)
+      });
+
+      if (!response.ok) {
+        throw new Error('Network response was not ok');
+      }
+
+      const result = await response.json();
+      console.log(result);
+      navigate('/signin')
+    } catch (error) {
+      console.error('There was a problem with your fetch operation:', error);
+    }
   };
 
   return (
@@ -106,7 +133,7 @@ const SignUp = () => {
               <RadioGroup
                 row
                 aria-labelledby="demo-form-control-label-placement"
-                name="position"
+                name="role"
                 defaultValue="top"
               >
                 <FormControlLabel
@@ -132,7 +159,7 @@ const SignUp = () => {
           </Button>
           <Grid container justifyContent="flex-end">
             <Grid item>
-              <Link href="#" variant="body2">
+              <Link component={RouterLink} to="/signin" variant="body2">
                 Already have an account? Sign in
               </Link>
             </Grid>
