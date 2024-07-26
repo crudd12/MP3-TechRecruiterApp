@@ -8,10 +8,15 @@ import { alpha } from '@mui/material';
 import Container from '@mui/material/Container';
 import { Button } from '@mui/material';
 import DeveloperEdit from './DeveloperEdit';
+import DescriptionEdit from './DescriptionEdit'; // Assuming you have this component
+import ProjectsEdit from './ProjectsEdit'; // Assuming you have this component
 import frogProfile from './img/frog-profile.jpg';
 
 export default function DeveloperView() {
     const [mode, setMode] = React.useState('light');
+    const [isEditing, setIsEditing] = useState(false);
+    const [isEditingDescription, setIsEditingDescription] = useState(false);
+    const [isEditingProjects, setIsEditingProjects] = useState(false);
 
     const defaultTheme = createTheme({ palette: { mode } });
 
@@ -19,19 +24,29 @@ export default function DeveloperView() {
         setMode((prev) => (prev === 'dark' ? 'light' : 'dark'));
     };
 
-    const [isEditing, setIsEditing] = useState(false);
-
     const [developerInfo, setDeveloperInfo] = useState({
         firstName: '',
         lastName: '',
         email: '',
-        description: '',
+        description: '',  // Ensure this is a string
         projects: '',
         languages: []
     });
 
-    const handleButtonClick = () => {
+    const [descriptionInfo, setDescriptionInfo] = useState({
+        description: '',  // Ensure this is a string
+    });
+
+    const handleEditClick = () => {
         setIsEditing(true);
+    };
+
+    const handleEditDescription = () => {
+        setIsEditingDescription(true);
+    };
+
+    const handleEditProjects = () => {
+        setIsEditingProjects(true);
     };
 
     const handleSave = (newInfo) => {
@@ -39,10 +54,20 @@ export default function DeveloperView() {
         setIsEditing(false);
     };
 
+    const handleSaveDescription = (newDescription) => {
+        setDeveloperInfo((prev) => ({ ...prev, description: newDescription.description })); // Ensure `description` is updated correctly
+        setIsEditingDescription(false);
+    };
+
+    const handleSaveProjects = (newProjects) => {
+        setDeveloperInfo((prev) => ({ ...prev, projects: newProjects.projects })); // Ensure `projects` is updated correctly
+        setIsEditingProjects(false);
+    };
+
     const renderDescription = (text) => {
-        return text.split('\n').map((paragraph, index) => (
+        return typeof text === 'string' ? text.split('\n').map((paragraph, index) => (
             <p key={index}>{paragraph}</p>
-        ));
+        )) : <p>No description available.</p>;
     };
 
     return (
@@ -121,7 +146,7 @@ export default function DeveloperView() {
                                                 top: 10,
                                                 right: 10,
                                             }}
-                                            onClick={handleButtonClick}
+                                            onClick={handleEditClick}
                                         >
                                             Edit
                                         </Button>
@@ -139,8 +164,20 @@ export default function DeveloperView() {
                                         flexDirection: 'column',
                                         alignItems: 'center',
                                         justifyContent: 'center',
+                                        position: 'relative',
                                     }}
                                 >
+                                    <Button
+                                        variant='contained'
+                                        sx={{
+                                            position: 'absolute',
+                                            top: 10,
+                                            right: 10,
+                                        }}
+                                        onClick={handleEditDescription}
+                                    >
+                                        Edit
+                                    </Button>
                                     <h2>Description</h2>
                                     {renderDescription(developerInfo.description)}
                                 </Box>
@@ -153,8 +190,20 @@ export default function DeveloperView() {
                                         flexDirection: 'column',
                                         alignItems: 'center',
                                         justifyContent: 'center',
+                                        position: 'relative',
                                     }}
                                 >
+                                    <Button
+                                        variant='contained'
+                                        sx={{
+                                            position: 'absolute',
+                                            top: 10,
+                                            right: 10,
+                                        }}
+                                        onClick={handleEditProjects}
+                                    >
+                                        Edit
+                                    </Button>
                                     <h2>Projects</h2>
                                     <p>{developerInfo.projects}</p>
                                 </Box>
@@ -164,6 +213,20 @@ export default function DeveloperView() {
                                     developerInfo={developerInfo}
                                     onSave={handleSave}
                                     onClose={() => setIsEditing(false)}
+                                />
+                            )}
+                            {isEditingDescription && (
+                                <DescriptionEdit
+                                    descriptionInfo={descriptionInfo}
+                                    onSave={handleSaveDescription}
+                                    onClose={() => setIsEditingDescription(false)}
+                                />
+                            )}
+                            {isEditingProjects && (
+                                <ProjectsEdit
+                                    projects={developerInfo.projects}
+                                    onSave={handleSaveProjects}
+                                    onClose={() => setIsEditingProjects(false)}
                                 />
                             )}
                         </div>
