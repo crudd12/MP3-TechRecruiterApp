@@ -2,7 +2,7 @@ import * as React from 'react';
 import { Avatar, Button, TextField, FormControlLabel, Checkbox} from '@mui/material';
 import { Link, Grid, Box, Typography, Container } from '@mui/material';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
-
+import { useNavigate, Link as RouterLink } from 'react-router-dom';
 
 // function Copyright(props) {
 //   return (
@@ -18,13 +18,39 @@ import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 // }
 
 const SignIn = () => {
-  const handleSubmit = (event) => {
+  const navigate = useNavigate();
+
+  const handleSubmit = async (event) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
-    console.log({
+
+    const userData = {
       email: data.get('email'),
       password: data.get('password'),
-    });
+    };
+
+    try {
+      const response = await fetch('http://localhost:3001/authentication/signin', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(userData),
+      });
+
+      if (!response.ok) {
+        const errorText = await response.text(); // Get error message from response
+        throw new Error(`Network response was not ok: ${errorText}`);
+      }
+
+      const result = await response.json();
+      console.log('Login successful:', result);
+      localStorage.setItem('authToken', result.token);
+      // Redirect to the index page
+      navigate('/');
+    } catch (error) {
+      console.error('There was a problem with your fetch operation:', error);
+    }
   };
 
   return (
@@ -83,7 +109,7 @@ const SignIn = () => {
                 </Link>
               </Grid>
               <Grid item>
-                <Link href="#" variant="body2">
+                <Link component={RouterLink} to="/signup" variant="body2">
                   {"Don't have an account? Sign Up"}
                 </Link>
               </Grid>
