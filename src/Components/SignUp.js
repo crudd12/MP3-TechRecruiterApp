@@ -12,6 +12,7 @@ import {
 } from "@mui/material";
 import { Link, Grid, Box, Typography, Container } from "@mui/material";
 import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
+import { useNavigate, Link as RouterLink } from 'react-router-dom';
 
 // function Copyright(props) {
 //   return (
@@ -32,6 +33,8 @@ import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 // }
 
 const SignUp = () => {
+  const navigate = useNavigate();
+
   const handleSubmit = async (event) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
@@ -59,6 +62,7 @@ const SignUp = () => {
 
       const result = await response.json();
       console.log(result);
+      navigate('/signin')
     } catch (error) {
       console.error('There was a problem with your fetch operation:', error);
     }
@@ -155,7 +159,7 @@ const SignUp = () => {
           </Button>
           <Grid container justifyContent="flex-end">
             <Grid item>
-              <Link href="#" variant="body2">
+              <Link component={RouterLink} to="/signin" variant="body2">
                 Already have an account? Sign in
               </Link>
             </Grid>
