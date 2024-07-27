@@ -6,7 +6,7 @@ import { ThemeProvider, createTheme } from '@mui/material/styles';
 import AppAppBar from './AppAppBar'
 import { alpha } from '@mui/material';
 import Container from '@mui/material/Container';
-import SearchBar from './SearchBar';
+// import SearchBar from './SearchBar';
 import DeveloperList from './DeveloperList';
 
 // const headerStyle = {
@@ -50,7 +50,7 @@ export default function RecruiterView() {
         >
       <Box sx={{ bgcolor: 'background.default' }}>
         <h2>Search Programming Languages</h2>
-        <SearchBar />
+        {/* <SearchBar /> */}
         <DeveloperList />
       </Box>
       </Container>

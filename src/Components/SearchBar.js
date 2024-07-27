@@ -7,7 +7,7 @@ const SearchBar = ({ value, onChange }) => {
   return (
     <TextField
       variant="outlined"
-      placeholder="find your perfect developer match..."
+      placeholder="find your ideal developer match..."
       value={value}
       onChange={onChange}
       InputProps={{
