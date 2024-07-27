@@ -6,68 +6,105 @@ import Card from '@mui/material/Card';
 import CardActionArea from '@mui/material/CardActionArea';
 import CardContent from '@mui/material/CardContent';
 import CardMedia from '@mui/material/CardMedia';
+import TextField from '@mui/material/TextField';
+import InputAdornment from '@mui/material/InputAdornment';
+import SearchIcon from '@mui/icons-material/Search';
+import { Box } from '@mui/material';
 
 
 function DeveloperList(props) {
   // const { post } = props;
 
   return (
-    <Grid item xs={12} md={6} sx={{ mt: 8 }}>
-      <CardActionArea component="a" href="/developer">
-        <Card sx={{ display: 'flex', mt: 4  }}>
-          <CardContent sx={{ flex: 1 }}>
-            <Typography component="h2" variant="h5">
-              {/* {post.title} */}
-              Courtney Rudd
-            </Typography>
-            <Typography variant="subtitle1" color="text.secondary">
-              {/* {post.date} */}
-            </Typography>
-            <Typography variant="subtitle1" paragraph>
-              {/* {post.description} */}
-              Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
-            </Typography>
-            {/* <Typography variant="subtitle1" color="primary">
+    <div>
+      <Box display="flex" justifyContent="center" mb={2}>
+        <TextField
+          variant="outlined"
+          placeholder="find your ideal developer match..."
+          // value={value}
+          // onChange={onChange}
+          InputProps={{
+            startAdornment: (
+              <InputAdornment position="start">
+                <SearchIcon />
+              </InputAdornment>
+            ),
+          }}
+          fullWidth
+        />
+      </Box>
+
+      <Grid item xs={12} md={6} sx={{ mt: 8 }}>
+        <CardActionArea component="a" href="/developer">
+          <Card sx={{ display: 'flex', mt: 4, backgroundColor: '#f2f9ff' }}>
+            <CardMedia
+              component="img"
+              sx={{ width: 160, display: { xs: 'none', sm: 'block' } }}
+              image='https://www.shutterstock.com/image-vector/default-avatar-profile-icon-social-600nw-1677509740.jpg'
+            // image={post.image}
+            // alt={post.imageLabel}
+            />
+            <CardContent sx={{ flex: 1 }}>
+              <Typography component="h2" variant="h6" align='right'>
+                {/* {post.title} */}
+                Courtney Rudd
+              </Typography>
+              <Typography variant="subtitle1" color="text.secondary">
+                {/* {post.date} */}
+              </Typography>
+              <Typography variant="subtitle1" paragraph>
+                {/* {post.description} */}
+                Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+              </Typography>
+              {/* <Typography variant="subtitle1" color="primary">
               Continue reading...
             </Typography> */}
-          </CardContent>
-          <CardMedia
+            </CardContent>
+            {/* <CardMedia
             component="img"
             sx={{ width: 160, display: { xs: 'none', sm: 'block' } }}
             image='https://www.shutterstock.com/image-vector/default-avatar-profile-icon-social-600nw-1677509740.jpg'
             // image={post.image}
             // alt={post.imageLabel}
-          />
-        </Card>
-      </CardActionArea>
-      <CardActionArea component="a" href="/developer">
-        <Card sx={{ display: 'flex', mt: 4  }}>
-          <CardContent sx={{ flex: 1 }}>
-            <Typography component="h2" variant="h5">
-              {/* {post.title} */}
-              Courtney Rudd
-            </Typography>
-            <Typography variant="subtitle1" color="text.secondary">
-              {/* {post.date} */}
-            </Typography>
-            <Typography variant="subtitle1" paragraph>
-              {/* {post.description} */}
-              Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
-            </Typography>
-            {/* <Typography variant="subtitle1" color="primary">
+          /> */}
+          </Card>
+        </CardActionArea>
+        <CardActionArea component="a" href="/developer">
+          <Card sx={{ display: 'flex', mt: 4, backgroundColor: '#f2f9ff' }}>
+            <CardMedia
+              component="img"
+              sx={{ width: 160, display: { xs: 'none', sm: 'block' } }}
+              image='https://www.shutterstock.com/image-vector/default-avatar-profile-icon-social-600nw-1677509740.jpg'
+            // image={post.image}
+            // alt={post.imageLabel}
+            />
+            <CardContent sx={{ flex: 1 }}>
+              <Typography component="h2" variant="h6" align='right'>
+                {/* {post.title} */}
+                Courtney Rudd
+              </Typography>
+              <Typography variant="subtitle1" color="text.secondary">
+                {/* {post.date} */}
+              </Typography>
+              <Typography variant="subtitle1" paragraph>
+                {/* {post.description} */}
+                Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+              </Typography>
+              {/* <Typography variant="subtitle1" color="primary">
               Continue reading...
             </Typography> */}
-          </CardContent>
-          <CardMedia
+            </CardContent>
+            {/* <CardMedia
             component="img"
             sx={{ width: 160, display: { xs: 'none', sm: 'block' } }}
             image='https://www.shutterstock.com/image-vector/default-avatar-profile-icon-social-600nw-1677509740.jpg'
             // image={post.image}
             // alt={post.imageLabel}
-          />
-        </Card>
-      </CardActionArea>
-    </Grid>
+          /> */}
+          </Card>
+        </CardActionArea>
+      </Grid>
+    </div>
   );
 }
 
