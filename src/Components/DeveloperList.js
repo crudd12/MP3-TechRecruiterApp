@@ -7,7 +7,6 @@ import CardActionArea from '@mui/material/CardActionArea';
 import CardContent from '@mui/material/CardContent';
 import CardMedia from '@mui/material/CardMedia';
 
-
 function DeveloperList(props) {
   // const { post } = props;
 

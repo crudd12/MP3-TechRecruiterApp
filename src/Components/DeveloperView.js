@@ -60,7 +60,10 @@ export default function DeveloperView() {
     };
 
     const handleSave = (newInfo) => {
-        setDeveloperInfo(newInfo);
+        setDeveloperInfo((prev) => ({
+            ...prev,
+            ...newInfo
+        }));
         setIsEditing(false);
     };
 

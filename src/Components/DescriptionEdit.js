@@ -6,6 +6,7 @@ import Button from '@mui/material/Button';
 import Modal from '@mui/material/Modal';
 import { styled } from '@mui/material/styles';
 
+
 const CustomTextField = styled(TextField)({
     '& .MuiInputBase-root': {
         overflow: 'auto',
@@ -43,6 +44,9 @@ function DescriptionEdit({ descriptionInfo, onSave, onClose }) {
                     border: '2px solid #000',
                     boxShadow: 24,
                     p: 4,
+                    h2: {
+                        textAlign: 'center',
+                    },
                 }}
             >
                 <h2 id="modal-title">Edit Description</h2>
