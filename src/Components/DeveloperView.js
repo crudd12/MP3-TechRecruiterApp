@@ -6,10 +6,10 @@ import { ThemeProvider, createTheme } from '@mui/material/styles';
 import AppAppBar from './AppAppBar';
 import { alpha } from '@mui/material';
 import Container from '@mui/material/Container';
-import { Button } from '@mui/material';
+import { Button, Chip } from '@mui/material';
 import DeveloperEdit from './DeveloperEdit';
-import DescriptionEdit from './DescriptionEdit'; // Assuming you have this component
-import ProjectsEdit from './ProjectsEdit'; // Assuming you have this component
+import DescriptionEdit from './DescriptionEdit';
+import ProjectsEdit from './ProjectsEdit';
 import frogProfile from './img/frog-profile.jpg';
 
 export default function DeveloperView() {
@@ -28,13 +28,13 @@ export default function DeveloperView() {
         firstName: '',
         lastName: '',
         email: '',
-        description: '',  // Ensure this is a string
+        description: '',
         projects: '',
         languages: []
     });
 
     const [descriptionInfo, setDescriptionInfo] = useState({
-        description: '',  // Ensure this is a string
+        description: '',
     });
 
     const handleEditClick = () => {
@@ -55,12 +55,12 @@ export default function DeveloperView() {
     };
 
     const handleSaveDescription = (newDescription) => {
-        setDeveloperInfo((prev) => ({ ...prev, description: newDescription.description })); // Ensure `description` is updated correctly
+        setDeveloperInfo((prev) => ({ ...prev, description: newDescription.description }));
         setIsEditingDescription(false);
     };
 
     const handleSaveProjects = (newProjects) => {
-        setDeveloperInfo((prev) => ({ ...prev, projects: newProjects.projects })); // Ensure `projects` is updated correctly
+        setDeveloperInfo((prev) => ({ ...prev, projects: newProjects.projects }));
         setIsEditingProjects(false);
     };
 
@@ -133,7 +133,7 @@ export default function DeveloperView() {
                                             width: 500,
                                             display: 'flex',
                                             flexDirection: 'column',
-                                            alignItems: 'flex-start',
+                                            alignItems: 'center',
                                             justifyContent: 'center',
                                             position: 'relative',
                                             marginLeft: 'auto',
@@ -150,9 +150,11 @@ export default function DeveloperView() {
                                         >
                                             Edit
                                         </Button>
-                                        <h2>
-                                            {developerInfo.languages.map(lang => lang.name).join(', ')}
-                                        </h2>
+                                        <Box sx={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'center', gap: 1 }}>
+                                            {developerInfo.languages.map((lang, index) => (
+                                                <Chip key={index} label={lang.name} />
+                                            ))}
+                                        </Box>
                                     </Box>
                                 </Box>
                                 <Box
