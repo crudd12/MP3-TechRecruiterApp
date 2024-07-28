@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import CssBaseline from '@mui/material/CssBaseline';
 import Box from '@mui/material/Box';
 import Divider from '@mui/material/Divider';
@@ -17,6 +17,8 @@ export default function DeveloperView() {
     const [isEditing, setIsEditing] = useState(false);
     const [isEditingDescription, setIsEditingDescription] = useState(false);
     const [isEditingProjects, setIsEditingProjects] = useState(false);
+    const descriptionRef = useRef(null);
+    const projectsRef = useRef(null);
 
     const defaultTheme = createTheme({ palette: { mode } });
 
@@ -32,6 +34,18 @@ export default function DeveloperView() {
         projects: '',
         languages: []
     });
+
+    useEffect(() => {
+        adjustBoxHeight(descriptionRef, developerInfo.description);
+        adjustBoxHeight(projectsRef, developerInfo.projects);
+    }, [developerInfo.description, developerInfo.projects]);
+
+    const adjustBoxHeight = (ref, content) => {
+        if (ref.current) {
+            ref.current.style.height = 'auto';
+            ref.current.style.height = `${ref.current.scrollHeight}px`;
+        }
+    };
 
     const handleEditClick = () => {
         setIsEditing(true);
@@ -60,10 +74,10 @@ export default function DeveloperView() {
         setIsEditingProjects(false);
     };
 
-    const renderDescription = (text) => {
+    const renderContent = (text) => {
         return typeof text === 'string' ? text.split('\n').map((paragraph, index) => (
             <p key={index} style={{ textAlign: 'left' }}>{paragraph}</p>
-        )) : <p>No description available.</p>;
+        )) : <p>No content available.</p>;
     };
 
     return (
@@ -154,9 +168,9 @@ export default function DeveloperView() {
                                     </Box>
                                 </Box>
                                 <Box
+                                    ref={descriptionRef}
                                     sx={{
                                         border: '2px solid grey',
-                                        height: 400,
                                         marginTop: 2,
                                         display: 'flex',
                                         flexDirection: 'column',
@@ -164,7 +178,8 @@ export default function DeveloperView() {
                                         justifyContent: 'flex-start',
                                         padding: 2,
                                         position: 'relative',
-                                        textAlign: 'left'
+                                        textAlign: 'left',
+                                        overflow: 'hidden',
                                     }}
                                 >
                                     <Button
@@ -179,12 +194,12 @@ export default function DeveloperView() {
                                         Edit
                                     </Button>
                                     <h2>Description</h2>
-                                    {renderDescription(developerInfo.description)}
+                                    {renderContent(developerInfo.description)}
                                 </Box>
                                 <Box
+                                    ref={projectsRef}
                                     sx={{
                                         border: '2px solid grey',
-                                        height: 400,
                                         marginTop: 2,
                                         display: 'flex',
                                         flexDirection: 'column',
@@ -192,7 +207,8 @@ export default function DeveloperView() {
                                         justifyContent: 'flex-start',
                                         padding: 2,
                                         position: 'relative',
-                                        textAlign: 'left'
+                                        textAlign: 'left',
+                                        overflow: 'hidden',
                                     }}
                                 >
                                     <Button
@@ -207,7 +223,7 @@ export default function DeveloperView() {
                                         Edit
                                     </Button>
                                     <h2>Projects</h2>
-                                    <p>{developerInfo.projects}</p>
+                                    {renderContent(developerInfo.projects)}
                                 </Box>
                             </Box>
                             {isEditing && (

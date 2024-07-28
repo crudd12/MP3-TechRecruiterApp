@@ -1,12 +1,23 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import Box from '@mui/material/Box';
 import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
 import Modal from '@mui/material/Modal';
+import { styled } from '@mui/material/styles';
+
+const CustomTextField = styled(TextField)({
+    '& .MuiInputBase-root': {
+        overflow: 'auto',
+    },
+});
 
 function ProjectsEdit({ projects, onSave, onClose }) {
     const [projectsList, setProjectsList] = useState(projects || '');
+
+    useEffect(() => {
+        setProjectsList(projects || '');
+    }, [projects]);
 
     const handleSave = () => {
         onSave({ projects: projectsList });
@@ -25,7 +36,9 @@ function ProjectsEdit({ projects, onSave, onClose }) {
                     top: '50%',
                     left: '50%',
                     transform: 'translate(-50%, -50%)',
-                    width: 400,
+                    width: '60%',
+                    maxHeight: '80vh',
+                    overflowY: 'auto',
                     bgcolor: 'background.paper',
                     border: '2px solid #000',
                     boxShadow: 24,
@@ -33,7 +46,7 @@ function ProjectsEdit({ projects, onSave, onClose }) {
                 }}
             >
                 <h2 id="modal-title">Edit Projects</h2>
-                <TextField
+                <CustomTextField
                     fullWidth
                     multiline
                     margin="normal"
@@ -41,6 +54,8 @@ function ProjectsEdit({ projects, onSave, onClose }) {
                     variant="outlined"
                     value={projectsList}
                     onChange={(e) => setProjectsList(e.target.value)}
+                    minRows={4}
+                    maxRows={20}
                 />
                 <Button onClick={handleSave} variant="contained" color="primary" sx={{ mt: 2 }}>
                     Save
