@@ -41,6 +41,11 @@ function ProjectsEdit({ projects, onSave, onClose }) {
     };
 
     const handleAddProject = () => {
+        if (projectsList.length >= 3) {
+            alert("You can only have a maximum of 3 projects.");
+            return;
+        }
+
         const newProject = {
             id: projectsList.length,
             title: `Project ${projectsList.length + 1}`,
@@ -92,7 +97,6 @@ function ProjectsEdit({ projects, onSave, onClose }) {
                             onChange={(e) => handleProjectChange(project.id, e.target.value)}
                             minRows={4}
                             maxRows={10}
-
                         />
                         <Button
                             variant="contained"
