@@ -13,7 +13,7 @@ import ProjectsEdit from './ProjectsEdit';
 import frogProfile from './img/frog-profile.jpg';
 
 export default function DeveloperView() {
-    const [mode, setMode] = React.useState('light');
+    const [mode, setMode] = useState('light');
     const [isEditing, setIsEditing] = useState(false);
     const [isEditingDescription, setIsEditingDescription] = useState(false);
     const [isEditingProjects, setIsEditingProjects] = useState(false);
@@ -31,10 +31,6 @@ export default function DeveloperView() {
         description: '',
         projects: '',
         languages: []
-    });
-
-    const [descriptionInfo, setDescriptionInfo] = useState({
-        description: '',
     });
 
     const handleEditClick = () => {
@@ -223,7 +219,7 @@ export default function DeveloperView() {
                             )}
                             {isEditingDescription && (
                                 <DescriptionEdit
-                                    descriptionInfo={descriptionInfo}
+                                    descriptionInfo={{ description: developerInfo.description }}
                                     onSave={handleSaveDescription}
                                     onClose={() => setIsEditingDescription(false)}
                                 />

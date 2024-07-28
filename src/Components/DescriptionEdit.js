@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import Box from '@mui/material/Box';
 import TextField from '@mui/material/TextField';
@@ -7,6 +7,10 @@ import Modal from '@mui/material/Modal';
 
 function DescriptionEdit({ descriptionInfo, onSave, onClose }) {
     const [description, setDescription] = useState(descriptionInfo.description || '');
+
+    useEffect(() => {
+        setDescription(descriptionInfo.description || '');
+    }, [descriptionInfo.description]);
 
     const handleSave = () => {
         onSave({ description });
