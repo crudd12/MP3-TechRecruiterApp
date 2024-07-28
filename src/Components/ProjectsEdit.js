@@ -16,9 +16,8 @@ function ProjectsEdit({ projects, onSave, onClose }) {
     const [projectsList, setProjectsList] = useState([]);
 
     useEffect(() => {
-        // Parse the projects string into an array of project objects if it's not already an array
         if (typeof projects === 'string') {
-            const projectArray = projects.split('\n').map((project, index) => ({
+            const projectArray = projects.split('\n\n').map((project, index) => ({
                 id: index,
                 title: `Project ${index + 1}`,
                 description: project,
@@ -37,7 +36,7 @@ function ProjectsEdit({ projects, onSave, onClose }) {
     };
 
     const handleSave = () => {
-        const projectDescriptions = projectsList.map((project) => project.description).join('\n');
+        const projectDescriptions = projectsList.map((project) => project.description).join('\n\n');
         onSave({ projects: projectDescriptions });
     };
 
