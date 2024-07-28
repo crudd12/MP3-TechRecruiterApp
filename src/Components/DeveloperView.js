@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import CssBaseline from '@mui/material/CssBaseline';
 import Box from '@mui/material/Box';
 import Divider from '@mui/material/Divider';
@@ -6,17 +6,19 @@ import { ThemeProvider, createTheme } from '@mui/material/styles';
 import AppAppBar from './AppAppBar';
 import { alpha } from '@mui/material';
 import Container from '@mui/material/Container';
-import { Button } from '@mui/material';
+import { Button, Chip } from '@mui/material';
 import DeveloperEdit from './DeveloperEdit';
-import DescriptionEdit from './DescriptionEdit'; // Assuming you have this component
-import ProjectsEdit from './ProjectsEdit'; // Assuming you have this component
+import DescriptionEdit from './DescriptionEdit';
+import ProjectsEdit from './ProjectsEdit';
 import frogProfile from './img/frog-profile.jpg';
 
 export default function DeveloperView() {
-    const [mode, setMode] = React.useState('light');
+    const [mode, setMode] = useState('light');
     const [isEditing, setIsEditing] = useState(false);
     const [isEditingDescription, setIsEditingDescription] = useState(false);
     const [isEditingProjects, setIsEditingProjects] = useState(false);
+    const descriptionRef = useRef(null);
+    const projectsRef = useRef(null);
 
     const defaultTheme = createTheme({ palette: { mode } });
 
@@ -28,14 +30,22 @@ export default function DeveloperView() {
         firstName: '',
         lastName: '',
         email: '',
-        description: '',  // Ensure this is a string
+        description: '',
         projects: '',
         languages: []
     });
 
-    const [descriptionInfo, setDescriptionInfo] = useState({
-        description: '',  // Ensure this is a string
-    });
+    useEffect(() => {
+        adjustBoxHeight(descriptionRef, developerInfo.description);
+        adjustBoxHeight(projectsRef, developerInfo.projects);
+    }, [developerInfo.description, developerInfo.projects]);
+
+    const adjustBoxHeight = (ref, content) => {
+        if (ref.current) {
+            ref.current.style.height = 'auto';
+            ref.current.style.height = `${ref.current.scrollHeight}px`;
+        }
+    };
 
     const handleEditClick = () => {
         setIsEditing(true);
@@ -50,24 +60,27 @@ export default function DeveloperView() {
     };
 
     const handleSave = (newInfo) => {
-        setDeveloperInfo(newInfo);
+        setDeveloperInfo((prev) => ({
+            ...prev,
+            ...newInfo
+        }));
         setIsEditing(false);
     };
 
     const handleSaveDescription = (newDescription) => {
-        setDeveloperInfo((prev) => ({ ...prev, description: newDescription.description })); // Ensure `description` is updated correctly
+        setDeveloperInfo((prev) => ({ ...prev, description: newDescription.description }));
         setIsEditingDescription(false);
     };
 
     const handleSaveProjects = (newProjects) => {
-        setDeveloperInfo((prev) => ({ ...prev, projects: newProjects.projects })); // Ensure `projects` is updated correctly
+        setDeveloperInfo((prev) => ({ ...prev, projects: newProjects.projects }));
         setIsEditingProjects(false);
     };
 
-    const renderDescription = (text) => {
+    const renderContent = (text) => {
         return typeof text === 'string' ? text.split('\n').map((paragraph, index) => (
-            <p key={index}>{paragraph}</p>
-        )) : <p>No description available.</p>;
+            <p key={index} style={{ textAlign: 'left' }}>{paragraph}</p>
+        )) : <p>No content available.</p>;
     };
 
     return (
@@ -91,14 +104,14 @@ export default function DeveloperView() {
                         display: 'flex',
                         flexDirection: 'column',
                         alignItems: 'center',
-                        pt: { xs: 14, sm: 20 },
-                        pb: { xs: 8, sm: 12 },
+                        pt: { xs: 12, sm: 16 },
+                        pb: { xs: 6, sm: 8 },
                     }}
                 >
                     <Box sx={{ bgcolor: 'background.default' }}>
                         <div>
                             <Box 
-                                margin={10}
+                                margin={5}
                                 sx={{ 
                                     border: '2px solid red', 
                                     padding: 2,
@@ -133,7 +146,7 @@ export default function DeveloperView() {
                                             width: 500,
                                             display: 'flex',
                                             flexDirection: 'column',
-                                            alignItems: 'flex-start',
+                                            alignItems: 'center',
                                             justifyContent: 'center',
                                             position: 'relative',
                                             marginLeft: 'auto',
@@ -150,21 +163,26 @@ export default function DeveloperView() {
                                         >
                                             Edit
                                         </Button>
-                                        <h2>
-                                            {developerInfo.languages.map(lang => lang.name).join(', ')}
-                                        </h2>
+                                        <Box sx={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'center', gap: 1 }}>
+                                            {developerInfo.languages.map((lang, index) => (
+                                                <Chip key={index} label={lang.name} />
+                                            ))}
+                                        </Box>
                                     </Box>
                                 </Box>
                                 <Box
+                                    ref={descriptionRef}
                                     sx={{
                                         border: '2px solid grey',
-                                        height: 400,
                                         marginTop: 2,
                                         display: 'flex',
                                         flexDirection: 'column',
-                                        alignItems: 'center',
-                                        justifyContent: 'center',
+                                        alignItems: 'flex-start',
+                                        justifyContent: 'flex-start',
+                                        padding: 2,
                                         position: 'relative',
+                                        textAlign: 'left',
+                                        overflow: 'hidden',
                                     }}
                                 >
                                     <Button
@@ -179,18 +197,21 @@ export default function DeveloperView() {
                                         Edit
                                     </Button>
                                     <h2>Description</h2>
-                                    {renderDescription(developerInfo.description)}
+                                    {renderContent(developerInfo.description)}
                                 </Box>
                                 <Box
+                                    ref={projectsRef}
                                     sx={{
                                         border: '2px solid grey',
-                                        height: 400,
                                         marginTop: 2,
                                         display: 'flex',
                                         flexDirection: 'column',
-                                        alignItems: 'center',
-                                        justifyContent: 'center',
+                                        alignItems: 'flex-start',
+                                        justifyContent: 'flex-start',
+                                        padding: 2,
                                         position: 'relative',
+                                        textAlign: 'left',
+                                        overflow: 'hidden',
                                     }}
                                 >
                                     <Button
@@ -205,7 +226,7 @@ export default function DeveloperView() {
                                         Edit
                                     </Button>
                                     <h2>Projects</h2>
-                                    <p>{developerInfo.projects}</p>
+                                    {renderContent(developerInfo.projects)}
                                 </Box>
                             </Box>
                             {isEditing && (
@@ -217,7 +238,7 @@ export default function DeveloperView() {
                             )}
                             {isEditingDescription && (
                                 <DescriptionEdit
-                                    descriptionInfo={descriptionInfo}
+                                    descriptionInfo={{ description: developerInfo.description }}
                                     onSave={handleSaveDescription}
                                     onClose={() => setIsEditingDescription(false)}
                                 />

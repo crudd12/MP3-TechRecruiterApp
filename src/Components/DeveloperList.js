@@ -11,7 +11,6 @@ import InputAdornment from '@mui/material/InputAdornment';
 import SearchIcon from '@mui/icons-material/Search';
 import { Box } from '@mui/material';
 
-
 function DeveloperList(props) {
   // const { post } = props;
 

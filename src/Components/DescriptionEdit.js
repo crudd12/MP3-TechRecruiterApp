@@ -1,12 +1,24 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import Box from '@mui/material/Box';
 import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
 import Modal from '@mui/material/Modal';
+import { styled } from '@mui/material/styles';
+
+
+const CustomTextField = styled(TextField)({
+    '& .MuiInputBase-root': {
+        overflow: 'auto',
+    },
+});
 
 function DescriptionEdit({ descriptionInfo, onSave, onClose }) {
     const [description, setDescription] = useState(descriptionInfo.description || '');
+
+    useEffect(() => {
+        setDescription(descriptionInfo.description || '');
+    }, [descriptionInfo.description]);
 
     const handleSave = () => {
         onSave({ description });
@@ -25,15 +37,20 @@ function DescriptionEdit({ descriptionInfo, onSave, onClose }) {
                     top: '50%',
                     left: '50%',
                     transform: 'translate(-50%, -50%)',
-                    width: 400,
+                    width: '60%',
+                    maxHeight: '80vh',
+                    overflowY: 'auto',
                     bgcolor: 'background.paper',
                     border: '2px solid #000',
                     boxShadow: 24,
                     p: 4,
+                    h2: {
+                        textAlign: 'center',
+                    },
                 }}
             >
                 <h2 id="modal-title">Edit Description</h2>
-                <TextField
+                <CustomTextField
                     fullWidth
                     multiline
                     margin="normal"
@@ -41,6 +58,8 @@ function DescriptionEdit({ descriptionInfo, onSave, onClose }) {
                     variant="outlined"
                     value={description}
                     onChange={(e) => setDescription(e.target.value)}
+                    minRows={4}
+                    maxRows={20}
                 />
                 <Button onClick={handleSave} variant="contained" color="primary" sx={{ mt: 2 }}>
                     Save
