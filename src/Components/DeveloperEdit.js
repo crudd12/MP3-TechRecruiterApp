@@ -9,8 +9,8 @@ function DeveloperEdit({ developerInfo, onSave, onClose }) {
     const [firstName, setFirstName] = useState(developerInfo.firstName);
     const [lastName, setLastName] = useState(developerInfo.lastName);
     const [email, setEmail] = useState(developerInfo.email)
-    const [description, setDescription] = useState(developerInfo.description);
-    const [projects, setProjects] = useState(developerInfo.projects);
+    // const [description, setDescription] = useState(developerInfo.description);
+    // const [projects, setProjects] = useState(developerInfo.projects);
     const [languages, setLanguages] = useState(developerInfo.languages || []);
 
     const handleSave = () => {
@@ -18,8 +18,8 @@ function DeveloperEdit({ developerInfo, onSave, onClose }) {
             firstName,
             lastName,
             email,
-            description,
-            projects,
+            // description,
+            // projects,
             languages
         });
     };
@@ -82,7 +82,7 @@ function DeveloperEdit({ developerInfo, onSave, onClose }) {
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
                 />
-                <TextField
+                {/* <TextField
                     fullWidth
                     multiline
                     margin="normal"
@@ -98,7 +98,7 @@ function DeveloperEdit({ developerInfo, onSave, onClose }) {
                     variant="outlined"
                     value={projects}
                     onChange={(e) => setProjects(e.target.value)}
-                />
+                /> */}
                 <Autocomplete
                     multiple
                     limitTags={3}

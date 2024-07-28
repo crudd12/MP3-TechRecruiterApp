@@ -91,14 +91,14 @@ export default function DeveloperView() {
                         display: 'flex',
                         flexDirection: 'column',
                         alignItems: 'center',
-                        pt: { xs: 14, sm: 20 },
-                        pb: { xs: 8, sm: 12 },
+                        pt: { xs: 12, sm: 16 },
+                        pb: { xs: 6, sm: 8 },
                     }}
                 >
                     <Box sx={{ bgcolor: 'background.default' }}>
                         <div>
                             <Box 
-                                margin={10}
+                                margin={5}
                                 sx={{ 
                                     border: '2px solid red', 
                                     padding: 2,
