@@ -1,6 +1,5 @@
 import * as React from "react";
-// import { useState } from "react";
-// import { useHistory } from "react-router-dom";
+import { useState } from "react";
 import {
   Avatar,
   Button,
@@ -12,7 +11,7 @@ import {
 } from "@mui/material";
 import { Link, Grid, Box, Typography, Container } from "@mui/material";
 import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
-import { useNavigate, Link as RouterLink } from 'react-router-dom';
+import { useNavigate, Link as RouterLink } from "react-router-dom";
 
 // function Copyright(props) {
 //   return (
@@ -34,6 +33,11 @@ import { useNavigate, Link as RouterLink } from 'react-router-dom';
 
 const SignUp = () => {
   const navigate = useNavigate();
+  const [role, setRole] = useState("developer");
+
+  const handleRoleChange = (event) => {
+    setRole(event.target.value);
+  };
 
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -44,27 +48,31 @@ const SignUp = () => {
       lastName: data.get("lastName"),
       email: data.get("email"),
       password: data.get("password"),
-      role: data.get("role")
+      role: data.get("role"),
+      company: data.get("company"),
     };
 
     try {
-      const response = await fetch('http://localhost:3001/authentication/signup', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(userData)
-      });
+      const response = await fetch(
+        "http://localhost:3001/authentication/signup",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(userData),
+        }
+      );
 
       if (!response.ok) {
-        throw new Error('Network response was not ok');
+        throw new Error("Network response was not ok");
       }
 
       const result = await response.json();
       console.log(result);
-      navigate('/signin')
+      navigate("/signin");
     } catch (error) {
-      console.error('There was a problem with your fetch operation:', error);
+      console.error("There was a problem with your fetch operation:", error);
     }
   };
 
@@ -129,12 +137,17 @@ const SignUp = () => {
                 autoComplete="new-password"
               />
             </Grid>
-            <Grid item xs={12} sx={{ display: "flex", justifyContent: "center" }}>
+            <Grid
+              item
+              xs={12}
+              sx={{ display: "flex", justifyContent: "center" }}
+            >
               <RadioGroup
                 row
-                aria-labelledby="demo-form-control-label-placement"
+                aria-labelledby="role"
                 name="role"
-                defaultValue="top"
+                value={role}
+                onChange={handleRoleChange}
               >
                 <FormControlLabel
                   value="developer"
@@ -148,6 +161,16 @@ const SignUp = () => {
                 />
               </RadioGroup>
             </Grid>
+            {role === "recruiter" && (
+              <Grid item xs={12}>
+                <TextField
+                  fullWidth
+                  id="company"
+                  label="Company Name"
+                  name="company"
+                />
+              </Grid>
+            )}
           </Grid>
           <Button
             type="submit"

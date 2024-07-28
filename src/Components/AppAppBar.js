@@ -11,6 +11,7 @@ import Typography from "@mui/material/Typography";
 import MenuItem from "@mui/material/MenuItem";
 import Drawer from "@mui/material/Drawer";
 import MenuIcon from "@mui/icons-material/Menu";
+import CircularProgress from "@mui/material/CircularProgress";
 // import ToggleColorMode from './ToggleColorMode';
 import ScreenSearchDesktopRoundedIcon from "@mui/icons-material/ScreenSearchDesktopRounded";
 import { useNavigate } from "react-router-dom";
@@ -27,7 +28,7 @@ import { CurrentUser } from "../Contexts/CurrentUser";
 // };
 
 function AppAppBar({ mode, toggleColorMode }) {
-  const { currentUser, setCurrentUser } = useContext(CurrentUser);
+  const { currentUser, setCurrentUser, loading } = useContext(CurrentUser);
   const [open, setOpen] = React.useState(false);
 
   const toggleDrawer = (newOpen) => () => {
@@ -52,12 +53,22 @@ function AppAppBar({ mode, toggleColorMode }) {
 
   const handleLogout = () => {
     // Clear the token from local storage
-    localStorage.removeItem("token");
+    localStorage.removeItem("authToken");
     // Clear the current user context
     setCurrentUser(null);
+    navigate("/");
   };
 
-  let signinActions = (
+  const signinActions = currentUser ? (
+    <Button
+      color="primary"
+      variant="contained"
+      size="small"
+      onClick={handleLogout}
+    >
+      Logout
+    </Button>
+  ) : (
     <>
       <Button
         color="primary"
@@ -79,19 +90,6 @@ function AppAppBar({ mode, toggleColorMode }) {
       </Button>
     </>
   );
-
-  if (currentUser) {
-    signinActions = (
-      <Button
-        color="primary"
-        variant="contained"
-        size="small"
-        onClick={handleLogout}
-      >
-        Logout
-      </Button>
-    );
-  }
 
   return (
     <div>
@@ -136,13 +134,6 @@ function AppAppBar({ mode, toggleColorMode }) {
                 px: 0,
               }}
             >
-              {/* <img
-                src={
-                  'https://assets-global.website-files.com/61ed56ae9da9fd7e0ef0a967/61f12e6faf73568658154dae_SitemarkDefault.svg'
-                }
-                style={logoStyle}
-                alt="logo of sitemark"
-              /> */}
               <a href="/">
                 <ScreenSearchDesktopRoundedIcon
                   fontSize="large"
@@ -158,38 +149,6 @@ function AppAppBar({ mode, toggleColorMode }) {
                     JEDC Recruiting
                   </Typography>
                 </MenuItem>
-                {/* <MenuItem
-                  onClick={() => scrollToSection('testimonials')}
-                  sx={{ py: '6px', px: '12px' }}
-                >
-                  <Typography variant="body2" color="text.primary">
-                    Testimonials
-                  </Typography>
-                </MenuItem>
-                <MenuItem
-                  onClick={() => scrollToSection('highlights')}
-                  sx={{ py: '6px', px: '12px' }}
-                >
-                  <Typography variant="body2" color="text.primary">
-                    Highlights
-                  </Typography>
-                </MenuItem> */}
-                {/* <MenuItem
-                  onClick={() => scrollToSection('pricing')}
-                  sx={{ py: '6px', px: '12px' }}
-                >
-                  <Typography variant="body2" color="text.primary">
-                    Pricing
-                  </Typography>
-                </MenuItem> */}
-                {/* <MenuItem
-                  onClick={() => scrollToSection('faq')}
-                  sx={{ py: '6px', px: '12px' }}
-                >
-                  <Typography variant="body2" color="text.primary">
-                    FAQ
-                  </Typography>
-                </MenuItem> */}
               </Box>
             </Box>
             <Box
@@ -199,26 +158,7 @@ function AppAppBar({ mode, toggleColorMode }) {
                 alignItems: "center",
               }}
             >
-              {/* <ToggleColorMode mode={mode} toggleColorMode={toggleColorMode} /> */}
-              {signinActions}
-              {/* <Button
-                color="primary"
-                variant="text"
-                size="small"
-                component="a"
-                href="/signin"
-              >
-                Sign in
-              </Button>
-              <Button
-                color="primary"
-                variant="contained"
-                size="small"
-                component="a"
-                href="/signup"
-              >
-                Sign up
-              </Button> */}
+              {loading ? <CircularProgress size={24} /> : signinActions}
             </Box>
             <Box sx={{ display: { sm: "", md: "none" } }}>
               <Button
@@ -249,42 +189,44 @@ function AppAppBar({ mode, toggleColorMode }) {
                   >
                     {/* <ToggleColorMode mode={mode} toggleColorMode={toggleColorMode} /> */}
                   </Box>
-                  {/* <MenuItem onClick={() => scrollToSection('features')}>
-                    Features
-                  </MenuItem>
-                  <MenuItem onClick={() => scrollToSection('testimonials')}>
-                    Testimonials
-                  </MenuItem>
-                  <MenuItem onClick={() => scrollToSection('highlights')}>
-                    Highlights
-                  </MenuItem>
-                  <MenuItem onClick={() => scrollToSection('pricing')}>
-                    Pricing
-                  </MenuItem>
-                  <MenuItem onClick={() => scrollToSection('faq')}>FAQ</MenuItem> */}
                   <Divider />
-                  <MenuItem>
-                    <Button
-                      color="primary"
-                      variant="contained"
-                      component="a"
-                      href="/signup"
-                      sx={{ width: "100%" }}
-                    >
-                      Sign up
-                    </Button>
-                  </MenuItem>
-                  <MenuItem>
-                    <Button
-                      color="primary"
-                      variant="outlined"
-                      component="a"
-                      href="/signin"
-                      sx={{ width: "100%" }}
-                    >
-                      Sign in
-                    </Button>
-                  </MenuItem>
+                  {!currentUser ? (
+                    <>
+                      <MenuItem sx={{ width: "100%" }}>
+                        <Button
+                          color="primary"
+                          variant="contained"
+                          component="a"
+                          href="/signup"
+                          sx={{ width: "100%" }}
+                        >
+                          Sign up
+                        </Button>
+                      </MenuItem>
+                      <MenuItem sx={{ width: "100%" }}>
+                        <Button
+                          color="primary"
+                          variant="outlined"
+                          component="a"
+                          href="/signin"
+                          sx={{ width: "100%" }}
+                        >
+                          Sign in
+                        </Button>
+                      </MenuItem>
+                    </>
+                  ) : (
+                    <MenuItem sx={{ width: "100%" }}>
+                      <Button
+                        color="primary"
+                        variant="contained"
+                        onClick={handleLogout}
+                        sx={{ width: "100%" }}
+                      >
+                        Logout
+                      </Button>
+                    </MenuItem>
+                  )}
                 </Box>
               </Drawer>
             </Box>
