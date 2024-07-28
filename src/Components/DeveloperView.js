@@ -66,7 +66,7 @@ export default function DeveloperView() {
 
     const renderDescription = (text) => {
         return typeof text === 'string' ? text.split('\n').map((paragraph, index) => (
-            <p key={index}>{paragraph}</p>
+            <p key={index} style={{ textAlign: 'left' }}>{paragraph}</p>
         )) : <p>No description available.</p>;
     };
 
@@ -164,9 +164,11 @@ export default function DeveloperView() {
                                         marginTop: 2,
                                         display: 'flex',
                                         flexDirection: 'column',
-                                        alignItems: 'center',
-                                        justifyContent: 'center',
+                                        alignItems: 'flex-start',
+                                        justifyContent: 'flex-start',
+                                        padding: 2,
                                         position: 'relative',
+                                        textAlign: 'left'
                                     }}
                                 >
                                     <Button
@@ -190,9 +192,11 @@ export default function DeveloperView() {
                                         marginTop: 2,
                                         display: 'flex',
                                         flexDirection: 'column',
-                                        alignItems: 'center',
-                                        justifyContent: 'center',
+                                        alignItems: 'flex-start',
+                                        justifyContent: 'flex-start',
+                                        padding: 2,
                                         position: 'relative',
+                                        textAlign: 'left'
                                     }}
                                 >
                                     <Button
