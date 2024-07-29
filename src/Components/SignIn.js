@@ -71,10 +71,21 @@ const SignIn = () => {
       if (userResponse.ok) {
         const user = await userResponse.json();
         setCurrentUser(user);
+
+        const userRole = user.role.toLowerCase();
+
+        // navigate based on user role after sign in 
+        if (userRole === "recruiter") {
+          navigate("/recruiter");
+        } else if (userRole === "developer") {
+          navigate("/developer");
+        } else {
+          navigate("/");
+        }
       }
 
       // Redirect to the index page
-      navigate("/");
+      // navigate("/");
     } catch (error) {
       console.error("There was a problem with your fetch operation:", error);
     }
