@@ -1,303 +1,304 @@
-import React, { useState, useEffect, useRef } from 'react';
-import CssBaseline from '@mui/material/CssBaseline';
-import Box from '@mui/material/Box';
-import Divider from '@mui/material/Divider';
-import { ThemeProvider, createTheme } from '@mui/material/styles';
-import AppAppBar from './AppAppBar';
-import { alpha } from '@mui/material';
-import Container from '@mui/material/Container';
-import { Button, Chip, Avatar } from '@mui/material';
-import DeveloperEdit from './DeveloperEdit';
-import DescriptionEdit from './DescriptionEdit';
-import ProjectsEdit from './ProjectsEdit';
-import frogProfile from './img/frog-profile.jpg';
+import React, { useState, useEffect, useRef, useContext } from "react";
+import CssBaseline from "@mui/material/CssBaseline";
+import Box from "@mui/material/Box";
+import Divider from "@mui/material/Divider";
+import { ThemeProvider, createTheme } from "@mui/material/styles";
+import AppAppBar from "./AppAppBar";
+import { alpha } from "@mui/material";
+import Container from "@mui/material/Container";
+import { Button, Chip } from "@mui/material";
+import DeveloperEdit from "./DeveloperEdit";
+import DescriptionEdit from "./DescriptionEdit";
+import ProjectsEdit from "./ProjectsEdit";
+import { CurrentUser } from "../Contexts/CurrentUser";
 
 export default function DeveloperView() {
-    const [mode, setMode] = useState('light');
-    const [isEditing, setIsEditing] = useState(false);
-    const [isEditingDescription, setIsEditingDescription] = useState(false);
-    const [isEditingProjects, setIsEditingProjects] = useState(false);
-    const descriptionRef = useRef(null);
-    const projectsRef = useRef(null);
+  const { currentUser, loading } = useContext(CurrentUser);
+  const [mode, setMode] = useState("light");
+  const [isEditing, setIsEditing] = useState(false);
+  const [isEditingDescription, setIsEditingDescription] = useState(false);
+  const [isEditingProjects, setIsEditingProjects] = useState(false);
+  const descriptionRef = useRef(null);
+  const projectsRef = useRef(null);
 
-    const defaultTheme = createTheme({ palette: { mode } });
+  const defaultTheme = createTheme({ palette: { mode } });
 
-    const toggleColorMode = () => {
-        setMode((prev) => (prev === 'dark' ? 'light' : 'dark'));
-    };
+  const toggleColorMode = () => {
+    setMode((prev) => (prev === "dark" ? "light" : "dark"));
+  };
 
-    const [developerInfo, setDeveloperInfo] = useState({
-        firstName: '',
-        lastName: '',
-        email: '',
-        description: '',
-        projects: '',
-        languages: [],
-        files: [],
-        profilePicture: '', // Added for profile picture
-    });
+  const [developerInfo, setDeveloperInfo] = useState({
+    firstName: "",
+    lastName: "",
+    email: "",
+    profileImage: "",
+    description: "",
+    projects: "",
+    languages: [],
+  });
 
-    useEffect(() => {
-        adjustBoxHeight(descriptionRef, developerInfo.description);
-        adjustBoxHeight(projectsRef, developerInfo.projects);
-    }, [developerInfo.description, developerInfo.projects]);
+  useEffect(() => {
+    if (currentUser) {
+      // Assuming currentUser contains developerInfo
+      setDeveloperInfo({
+        firstName: currentUser.firstName,
+        lastName: currentUser.lastName,
+        email: currentUser.email,
+        profileImage: currentUser.profile.profileImage,
+        description: currentUser.profile.description,
+        projects: currentUser.profile.projects,
+        languages: currentUser.profile.languages || [],
+      });
+    }
+  }, [currentUser]);
 
-    const adjustBoxHeight = (ref, content) => {
-        if (ref.current) {
-            ref.current.style.height = 'auto';
-            ref.current.style.height = `${ref.current.scrollHeight}px`;
-        }
-    };
+  useEffect(() => {
+    adjustBoxHeight(descriptionRef, developerInfo.description);
+    adjustBoxHeight(projectsRef, developerInfo.projects);
+  }, [developerInfo.description, developerInfo.projects]);
 
-    const handleEditClick = () => {
-        setIsEditing(true);
-    };
+  const adjustBoxHeight = (ref, content) => {
+    if (ref.current) {
+      ref.current.style.height = "auto";
+      ref.current.style.height = `${ref.current.scrollHeight}px`;
+    }
+  };
 
-    const handleEditDescription = () => {
-        setIsEditingDescription(true);
-    };
+  const handleEditClick = () => {
+    setIsEditing(true);
+  };
 
-    const handleEditProjects = () => {
-        setIsEditingProjects(true);
-    };
+  const handleEditDescription = () => {
+    setIsEditingDescription(true);
+  };
 
-    const handleSave = (newInfo) => {
-        setDeveloperInfo((prev) => ({
-            ...prev,
-            ...newInfo
-        }));
-        setIsEditing(false);
-    };
+  const handleEditProjects = () => {
+    setIsEditingProjects(true);
+  };
 
-    const handleSaveDescription = (newDescription) => {
-        setDeveloperInfo((prev) => ({ ...prev, description: newDescription.description }));
-        setIsEditingDescription(false);
-    };
+  const handleSave = (updatedUser) => {
+    console.log("Updated User Data:", updatedUser);
+    setDeveloperInfo((prev) => ({
+      ...prev,
+      ...updatedUser,
+      profile: {
+        ...prev.profile,
+        ...updatedUser.profile, // Make sure to merge the profile updates
+      },
+    }));
+  };
 
-    const handleSaveProjects = (newProjects) => {
-        setDeveloperInfo((prev) => ({ 
-            ...prev, 
-            projects: newProjects.projects, 
-            files: newProjects.files 
-        }));
-        setIsEditingProjects(false);
-    };
+  const handleSaveDescription = (newDescription) => {
+    setDeveloperInfo((prev) => ({
+      ...prev,
+      description: newDescription.description,
+    }));
+    setIsEditingDescription(false);
+  };
 
-    const renderContent = (text) => {
-        return typeof text === 'string' ? text.split('\n').map((paragraph, index) => (
-            <p key={index} style={{ textAlign: 'left' }}>{paragraph}</p>
-        )) : <p>No content available.</p>;
-    };
+  const handleSaveProjects = (newProjects) => {
+    setDeveloperInfo((prev) => ({ ...prev, projects: newProjects.projects }));
+    setIsEditingProjects(false);
+  };
 
-    const renderProjects = () => {
-        if (!developerInfo.projects || !developerInfo.files) return <p>No projects available.</p>;
-    
-        return developerInfo.projects.split('\n\n').map((project, index) => (
-            <div key={index} style={{ marginBottom: '20px' }}>
-                <div>{project.split('\n').map((line, i) => <p key={i}>{line}</p>)}</div>
-                {developerInfo.files[index] && (
-                    <div>
-                        {developerInfo.files[index].type.startsWith('image/') ? (
-                            <img
-                                src={URL.createObjectURL(developerInfo.files[index])}
-                                alt={`Project ${index + 1}`}
-                                style={{ maxWidth: '100%', height: 'auto' }}
-                            />
-                        ) : (
-                            <a href={URL.createObjectURL(developerInfo.files[index])} download>
-                                {developerInfo.files[index].name}
-                            </a>
-                        )}
-                    </div>
-                )}
-            </div>
-        ));
-    };
-
-    return (
-        <ThemeProvider theme={defaultTheme}>
-            <CssBaseline />
-            <AppAppBar mode={mode} toggleColorMode={toggleColorMode} />
-            <Box
-                id="hero"
-                sx={(theme) => ({
-                    width: '100%',
-                    backgroundImage:
-                        theme.palette.mode === 'light'
-                            ? 'linear-gradient(180deg, #CEE5FD, #FFF)'
-                            : `linear-gradient(#02294F, ${alpha('#090E10', 0.0)})`,
-                    backgroundSize: '100% 20%',
-                    backgroundRepeat: 'no-repeat',
-                })}
-            >
-                <Container
-                    sx={{
-                        display: 'flex',
-                        flexDirection: 'column',
-                        alignItems: 'center',
-                        pt: { xs: 12, sm: 16 },
-                        pb: { xs: 6, sm: 8 },
-                    }}
-                >
-                    <Box sx={{ bgcolor: 'background.default' }}>
-                        <div>
-                            <Box 
-                                margin={5}
-                                sx={{ 
-                                    border: '2px solid red', 
-                                    padding: 2,
-                                    position: 'relative',
-                                }}
-                            >
-                                <Box
-                                    sx={{ 
-                                        display: 'flex', 
-                                        gap: 2,
-                                    }}
-                                >
-                                    <Box
-                                        sx={{
-                                            border: '2px solid grey',
-                                            height: 400,
-                                            width: 500,
-                                            display: 'flex',
-                                            flexDirection: 'column',
-                                            alignItems: 'center',
-                                            justifyContent: 'center',
-                                        }}
-                                    >
-                                        <Avatar
-                                            src={developerInfo.profilePicture || frogProfile}
-                                            alt={`${developerInfo.firstName} ${developerInfo.lastName}`}
-                                            sx={{
-                                                width: 250,
-                                                height: 250,
-                                                borderRadius: '50%',
-                                                mb: 2,
-                                            }}
-                                        />
-                                        <h2>{developerInfo.firstName} {developerInfo.lastName}</h2>
-                                        <p>Contact: {developerInfo.email}</p>
-                                    </Box>
-                                    <Box
-                                        sx={{
-                                            border: '2px solid grey',
-                                            height: 300,
-                                            width: 500,
-                                            display: 'flex',
-                                            flexDirection: 'column',
-                                            alignItems: 'center',
-                                            justifyContent: 'center',
-                                            position: 'relative',
-                                            marginLeft: 'auto',
-                                        }}
-                                    >
-                                        <Button
-                                            variant='contained'
-                                            sx={{
-                                                position: 'absolute',
-                                                top: 10,
-                                                right: 10,
-                                            }}
-                                            onClick={handleEditClick}
-                                        >
-                                            Edit
-                                        </Button>
-                                        <Box sx={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'center', gap: 1 }}>
-                                            {developerInfo.languages.map((lang, index) => (
-                                                <Chip key={index} label={lang.name} />
-                                            ))}
-                                        </Box>
-                                    </Box>
-                                </Box>
-                                <Box
-                                    ref={descriptionRef}
-                                    sx={{
-                                        border: '2px solid grey',
-                                        marginTop: 2,
-                                        display: 'flex',
-                                        flexDirection: 'column',
-                                        alignItems: 'flex-start',
-                                        justifyContent: 'flex-start',
-                                        padding: 2,
-                                        position: 'relative',
-                                        textAlign: 'left',
-                                        overflow: 'hidden',
-                                    }}
-                                >
-                                    <Button
-                                        variant='contained'
-                                        sx={{
-                                            position: 'absolute',
-                                            top: 10,
-                                            right: 10,
-                                        }}
-                                        onClick={handleEditDescription}
-                                    >
-                                        Edit
-                                    </Button>
-                                    <h2>Description</h2>
-                                    {renderContent(developerInfo.description)}
-                                </Box>
-                                <Box
-                                    ref={projectsRef}
-                                    sx={{
-                                        border: '2px solid grey',
-                                        marginTop: 2,
-                                        display: 'flex',
-                                        flexDirection: 'column',
-                                        alignItems: 'flex-start',
-                                        justifyContent: 'flex-start',
-                                        padding: 2,
-                                        position: 'relative',
-                                        textAlign: 'left',
-                                        overflowY: 'auto',
-                                        maxHeight: '500px',
-                                        minHeight: '100px',
-                                    }}
-                                >
-                                    <Button
-                                        variant='contained'
-                                        sx={{
-                                            position: 'absolute',
-                                            top: 10,
-                                            right: 10,
-                                        }}
-                                        onClick={handleEditProjects}
-                                    >
-                                        Edit
-                                    </Button>
-                                    <h2>Projects</h2>
-                                    {renderProjects()}
-                                </Box>
-                            </Box>
-                            {isEditing && (
-                                <DeveloperEdit
-                                    developerInfo={developerInfo}
-                                    onSave={handleSave}
-                                    onClose={() => setIsEditing(false)}
-                                />
-                            )}
-                            {isEditingDescription && (
-                                <DescriptionEdit
-                                    descriptionInfo={{ description: developerInfo.description }}
-                                    onSave={handleSaveDescription}
-                                    onClose={() => setIsEditingDescription(false)}
-                                />
-                            )}
-                            {isEditingProjects && (
-                                <ProjectsEdit
-                                    projects={developerInfo.projects}
-                                    files={developerInfo.files}
-                                    onSave={handleSaveProjects}
-                                    onClose={() => setIsEditingProjects(false)}
-                                />
-                            )}
-                        </div>
-                    </Box>
-                </Container>
-            </Box>
-            <Divider />
-        </ThemeProvider>
+  const renderContent = (text) => {
+    return typeof text === "string" ? (
+      text.split("\n").map((paragraph, index) => (
+        <p key={index} style={{ textAlign: "left" }}>
+          {paragraph}
+        </p>
+      ))
+    ) : (
+      <p>No content available.</p>
     );
+  };
+
+  return (
+    <ThemeProvider theme={defaultTheme}>
+      <CssBaseline />
+      <AppAppBar mode={mode} toggleColorMode={toggleColorMode} />
+      <Box
+        id="hero"
+        sx={(theme) => ({
+          width: "100%",
+          backgroundImage:
+            theme.palette.mode === "light"
+              ? "linear-gradient(180deg, #CEE5FD, #FFF)"
+              : `linear-gradient(#02294F, ${alpha("#090E10", 0.0)})`,
+          backgroundSize: "100% 20%",
+          backgroundRepeat: "no-repeat",
+        })}
+      >
+        <Container
+          sx={{
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
+            pt: { xs: 12, sm: 16 },
+            pb: { xs: 6, sm: 8 },
+          }}
+        >
+          <Box sx={{ bgcolor: "background.default" }}>
+            <div>
+              <Box
+                margin={5}
+                sx={{
+                  border: "2px solid red",
+                  padding: 2,
+                  position: "relative",
+                }}
+              >
+                <Box
+                  sx={{
+                    display: "flex",
+                    gap: 2,
+                  }}
+                >
+                  <Box
+                    sx={{
+                      border: "2px solid grey",
+                      height: 400,
+                      width: 500,
+                      display: "flex",
+                      flexDirection: "column",
+                      alignItems: "center",
+                      justifyContent: "center",
+                    }}
+                  >
+                    <img
+                      src={`http://localhost:3001/${developerInfo.profileImage}`}
+                      alt="Frog Profile"
+                      style={{ width: "100%", height: "auto" }}
+                    />
+                    <h2>
+                      {developerInfo.firstName} {developerInfo.lastName}
+                    </h2>
+                    <p>Contact: {developerInfo.email}</p>
+                  </Box>
+                  <Box
+                    sx={{
+                      border: "2px solid grey",
+                      height: 300,
+                      width: 500,
+                      display: "flex",
+                      flexDirection: "column",
+                      alignItems: "center",
+                      justifyContent: "center",
+                      position: "relative",
+                      marginLeft: "auto",
+                    }}
+                  >
+                    <Button
+                      variant="contained"
+                      sx={{
+                        position: "absolute",
+                        top: 10,
+                        right: 10,
+                      }}
+                      onClick={handleEditClick}
+                    >
+                      Edit
+                    </Button>
+                    <Box
+                      sx={{
+                        display: "flex",
+                        flexWrap: "wrap",
+                        justifyContent: "center",
+                        gap: 1,
+                      }}
+                    >
+                      {developerInfo.languages.map((lang, index) => (
+                        <Chip key={index} label={lang} />
+                      ))}
+                    </Box>
+                  </Box>
+                </Box>
+                <Box
+                  ref={descriptionRef}
+                  sx={{
+                    border: "2px solid grey",
+                    marginTop: 2,
+                    display: "flex",
+                    flexDirection: "column",
+                    alignItems: "flex-start",
+                    justifyContent: "flex-start",
+                    padding: 2,
+                    position: "relative",
+                    textAlign: "left",
+                    overflow: "hidden",
+                  }}
+                >
+                  <Button
+                    variant="contained"
+                    sx={{
+                      position: "absolute",
+                      top: 10,
+                      right: 10,
+                    }}
+                    onClick={handleEditDescription}
+                  >
+                    Edit
+                  </Button>
+                  <h2>Description</h2>
+                  {renderContent(developerInfo.description)}
+                </Box>
+                <Box
+                  ref={projectsRef}
+                  sx={{
+                    border: "2px solid grey",
+                    marginTop: 2,
+                    display: "flex",
+                    flexDirection: "column",
+                    alignItems: "flex-start",
+                    justifyContent: "flex-start",
+                    padding: 2,
+                    position: "relative",
+                    textAlign: "left",
+                    overflow: "hidden",
+                  }}
+                >
+                  <Button
+                    variant="contained"
+                    sx={{
+                      position: "absolute",
+                      top: 10,
+                      right: 10,
+                    }}
+                    onClick={handleEditProjects}
+                  >
+                    Edit
+                  </Button>
+                  <h2>Projects</h2>
+                  {renderContent(developerInfo.projects)}
+                </Box>
+              </Box>
+              {isEditing && (
+                <DeveloperEdit
+                  developerInfo={developerInfo}
+                  onSave={handleSave}
+                  onClose={() => setIsEditing(false)}
+                  currentUser={currentUser}
+                />
+              )}
+              {isEditingDescription && (
+                <DescriptionEdit
+                  descriptionInfo={{ description: developerInfo.description }}
+                  onSave={handleSaveDescription}
+                  onClose={() => setIsEditingDescription(false)}
+                />
+              )}
+              {isEditingProjects && (
+                <ProjectsEdit
+                  projects={developerInfo.projects}
+                  onSave={handleSaveProjects}
+                  onClose={() => setIsEditingProjects(false)}
+                />
+              )}
+            </div>
+          </Box>
+        </Container>
+      </Box>
+      <Divider />
+    </ThemeProvider>
+  );
 }
