@@ -6,7 +6,7 @@ import { ThemeProvider, createTheme } from '@mui/material/styles';
 import AppAppBar from './AppAppBar';
 import { alpha } from '@mui/material';
 import Container from '@mui/material/Container';
-import { Button, Chip } from '@mui/material';
+import { Button, Chip, Avatar } from '@mui/material';
 import DeveloperEdit from './DeveloperEdit';
 import DescriptionEdit from './DescriptionEdit';
 import ProjectsEdit from './ProjectsEdit';
@@ -33,7 +33,8 @@ export default function DeveloperView() {
         description: '',
         projects: '',
         languages: [],
-        files: []
+        files: [],
+        profilePicture: '', // Added for profile picture
     });
 
     useEffect(() => {
@@ -165,7 +166,16 @@ export default function DeveloperView() {
                                             justifyContent: 'center',
                                         }}
                                     >
-                                        <img src={frogProfile} alt="Frog Profile" style={{ width: '100%', height: 'auto' }} />
+                                        <Avatar
+                                            src={developerInfo.profilePicture || frogProfile}
+                                            alt={`${developerInfo.firstName} ${developerInfo.lastName}`}
+                                            sx={{
+                                                width: 250,
+                                                height: 250,
+                                                borderRadius: '50%',
+                                                mb: 2,
+                                            }}
+                                        />
                                         <h2>{developerInfo.firstName} {developerInfo.lastName}</h2>
                                         <p>Contact: {developerInfo.email}</p>
                                     </Box>
@@ -242,7 +252,7 @@ export default function DeveloperView() {
                                         position: 'relative',
                                         textAlign: 'left',
                                         overflowY: 'auto',
-                                        maxHeight: '500px', // Set a max height to enable scrolling
+                                        maxHeight: '500px',
                                         minHeight: '100px',
                                     }}
                                 >
