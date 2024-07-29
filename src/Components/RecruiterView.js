@@ -6,12 +6,8 @@ import { ThemeProvider, createTheme } from '@mui/material/styles';
 import AppAppBar from './AppAppBar'
 import { alpha } from '@mui/material';
 import Container from '@mui/material/Container';
-// import SearchBar from './SearchBar';
 import DeveloperList from './DeveloperList';
 
-// const headerStyle = {
-//  paddingTop: '110px'
-// };
 
 export default function RecruiterView() {
   const [mode, setMode] = React.useState('light');
@@ -48,9 +44,8 @@ export default function RecruiterView() {
             pb: { xs: 8, sm: 12 },
           }}
         >
-      <Box sx={{ bgcolor: 'background.default' }}>
+      <Box sx={{ bgcolor: 'rgba(255,255,255,0)' }}>
         <h2>Search Programming Languages</h2>
-        {/* <SearchBar /> */}
         <DeveloperList />
       </Box>
       </Container>

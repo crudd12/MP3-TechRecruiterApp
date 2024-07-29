@@ -14,19 +14,27 @@ import { useEffect, useState } from 'react';
 
 function DeveloperList() {
 
+
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [query, setQuery] = useState(''); // state for search input
+  const [searchTerm, setSearchTerm] = useState(''); // state for search term that triggers data fetch
 
   useEffect(() => {
     const fetchData = async () => {
+      setLoading(true);
       try {
-        const response = await fetch('http://localhost:3001/recruiter/devs');
+        // fetch all developers if no search input or filter by language
+        const url = searchTerm
+          ? `http://localhost:3001/recruiter/languages?language=${searchTerm}`
+          : 'http://localhost:3001/recruiter/languages';
+          
+        const response = await fetch(url);
         if (!response.ok) {
           throw new Error(`HTTP error! status: ${response.status}`);
         }
         const result = await response.json();
-        console.log(result)
         setData(result);
       } catch (error) {
         setError(error);
@@ -36,7 +44,13 @@ function DeveloperList() {
     };
 
     fetchData();
-  }, []);
+  }, [searchTerm]); // update data whenever searchTerm changes
+
+  const handleKeyDown = (event) => {
+    if (event.key === 'Enter') {
+      setSearchTerm(query); // sets searchTerm to trigger data fetch
+    }
+  };
 
   if (loading) {
     return <div>Loading...</div>;
@@ -52,8 +66,9 @@ function DeveloperList() {
         <TextField
           variant="outlined"
           placeholder="find your ideal developer match..."
-          // value={value}
-          // onChange={onChange}
+          value={query}
+          onChange={(e) => setQuery(e.target.value)}
+          onKeyDown={handleKeyDown}
           InputProps={{
             startAdornment: (
               <InputAdornment position="start">
@@ -66,7 +81,7 @@ function DeveloperList() {
       </Box>
 
       {data.map((dev) => (
-        <Grid item xs={12} md={6} sx={{ mt: 8 }}>
+        <Grid item xs={12} md={6} sx={{ mt: 8 }} key={dev._id}>
           <CardActionArea component="a" href="/developer">
             <Card sx={{ display: 'flex', mt: 4, backgroundColor: '#f2f9ff' }}>
               <CardMedia
@@ -94,3 +109,4 @@ function DeveloperList() {
 
 
 export default DeveloperList;
+
