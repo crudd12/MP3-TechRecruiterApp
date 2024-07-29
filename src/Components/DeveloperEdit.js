@@ -4,23 +4,34 @@ import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import TextField from '@mui/material/TextField';
 import Autocomplete from '@mui/material/Autocomplete';
+import Avatar from '@mui/material/Avatar';
 
 function DeveloperEdit({ developerInfo, onSave, onClose }) {
     const [firstName, setFirstName] = useState(developerInfo.firstName);
     const [lastName, setLastName] = useState(developerInfo.lastName);
-    const [email, setEmail] = useState(developerInfo.email)
-    // const [description, setDescription] = useState(developerInfo.description);
-    // const [projects, setProjects] = useState(developerInfo.projects);
+    const [email, setEmail] = useState(developerInfo.email);
     const [languages, setLanguages] = useState(developerInfo.languages || []);
+    const [profilePicture, setProfilePicture] = useState(developerInfo.profilePicture || '');
+
+    // Function to handle file input change
+    const handleFileChange = (event) => {
+        const file = event.target.files[0];
+        if (file) {
+            const reader = new FileReader();
+            reader.onloadend = () => {
+                setProfilePicture(reader.result); // Update state with image URL
+            };
+            reader.readAsDataURL(file); // Read the file as a data URL
+        }
+    };
 
     const handleSave = () => {
         onSave({
             firstName,
             lastName,
             email,
-            // description,
-            // projects,
-            languages
+            languages,
+            profilePicture, // Include profile picture in the saved data
         });
     };
 
@@ -55,9 +66,27 @@ function DeveloperEdit({ developerInfo, onSave, onClose }) {
                     border: '2px solid #000',
                     boxShadow: 24,
                     p: 4,
+                    display: 'flex',
+                    flexDirection: 'column',
+                    alignItems: 'center',
                 }}
             >
                 <h2 id="modal-title">Edit Information</h2>
+                <Avatar
+                    src={profilePicture}
+                    sx={{
+                        width: 100,
+                        height: 100,
+                        borderRadius: '50%',
+                        mb: 2,
+                    }}
+                />
+                <input
+                    type="file"
+                    accept="image/*"
+                    onChange={handleFileChange}
+                    style={{ marginBottom: '16px' }}
+                />
                 <TextField
                     fullWidth
                     margin="normal"
@@ -74,7 +103,7 @@ function DeveloperEdit({ developerInfo, onSave, onClose }) {
                     value={lastName}
                     onChange={(e) => setLastName(e.target.value)}
                 />
-                  <TextField
+                <TextField
                     fullWidth
                     margin="normal"
                     label="Edit Email"
@@ -82,23 +111,6 @@ function DeveloperEdit({ developerInfo, onSave, onClose }) {
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
                 />
-                {/* <TextField
-                    fullWidth
-                    multiline
-                    margin="normal"
-                    label="Edit Description"
-                    variant="outlined"
-                    value={description}
-                    onChange={(e) => setDescription(e.target.value)}
-                />
-                <TextField
-                    fullWidth
-                    margin="normal"
-                    label="Edit Projects"
-                    variant="outlined"
-                    value={projects}
-                    onChange={(e) => setProjects(e.target.value)}
-                /> */}
                 <Autocomplete
                     multiple
                     limitTags={3}
@@ -111,10 +123,10 @@ function DeveloperEdit({ developerInfo, onSave, onClose }) {
                     sx={{ width: 300 }}
                     renderInput={(params) => <TextField {...params} label="Programming Languages" />}
                 />
-                <Button onClick={handleSave} variant="contained" color="primary">
+                <Button onClick={handleSave} variant="contained" color="primary" sx={{ mt: 2 }}>
                     Save
                 </Button>
-                <Button onClick={onClose} variant="contained" color="secondary" sx={{ ml: 2 }}>
+                <Button onClick={onClose} variant="contained" color="secondary" sx={{ ml: 2, mt: 2 }}>
                     Cancel
                 </Button>
             </Box>

@@ -6,7 +6,7 @@ import { ThemeProvider, createTheme } from '@mui/material/styles';
 import AppAppBar from './AppAppBar';
 import { alpha } from '@mui/material';
 import Container from '@mui/material/Container';
-import { Button, Chip } from '@mui/material';
+import { Button, Chip, Avatar } from '@mui/material';
 import DeveloperEdit from './DeveloperEdit';
 import DescriptionEdit from './DescriptionEdit';
 import ProjectsEdit from './ProjectsEdit';
@@ -32,7 +32,9 @@ export default function DeveloperView() {
         email: '',
         description: '',
         projects: '',
-        languages: []
+        languages: [],
+        files: [],
+        profilePicture: '', // Added for profile picture
     });
 
     useEffect(() => {
@@ -73,7 +75,11 @@ export default function DeveloperView() {
     };
 
     const handleSaveProjects = (newProjects) => {
-        setDeveloperInfo((prev) => ({ ...prev, projects: newProjects.projects }));
+        setDeveloperInfo((prev) => ({ 
+            ...prev, 
+            projects: newProjects.projects, 
+            files: newProjects.files 
+        }));
         setIsEditingProjects(false);
     };
 
@@ -81,6 +87,31 @@ export default function DeveloperView() {
         return typeof text === 'string' ? text.split('\n').map((paragraph, index) => (
             <p key={index} style={{ textAlign: 'left' }}>{paragraph}</p>
         )) : <p>No content available.</p>;
+    };
+
+    const renderProjects = () => {
+        if (!developerInfo.projects || !developerInfo.files) return <p>No projects available.</p>;
+    
+        return developerInfo.projects.split('\n\n').map((project, index) => (
+            <div key={index} style={{ marginBottom: '20px' }}>
+                <div>{project.split('\n').map((line, i) => <p key={i}>{line}</p>)}</div>
+                {developerInfo.files[index] && (
+                    <div>
+                        {developerInfo.files[index].type.startsWith('image/') ? (
+                            <img
+                                src={URL.createObjectURL(developerInfo.files[index])}
+                                alt={`Project ${index + 1}`}
+                                style={{ maxWidth: '100%', height: 'auto' }}
+                            />
+                        ) : (
+                            <a href={URL.createObjectURL(developerInfo.files[index])} download>
+                                {developerInfo.files[index].name}
+                            </a>
+                        )}
+                    </div>
+                )}
+            </div>
+        ));
     };
 
     return (
@@ -135,7 +166,16 @@ export default function DeveloperView() {
                                             justifyContent: 'center',
                                         }}
                                     >
-                                        <img src={frogProfile} alt="Frog Profile" style={{ width: '100%', height: 'auto' }} />
+                                        <Avatar
+                                            src={developerInfo.profilePicture || frogProfile}
+                                            alt={`${developerInfo.firstName} ${developerInfo.lastName}`}
+                                            sx={{
+                                                width: 250,
+                                                height: 250,
+                                                borderRadius: '50%',
+                                                mb: 2,
+                                            }}
+                                        />
                                         <h2>{developerInfo.firstName} {developerInfo.lastName}</h2>
                                         <p>Contact: {developerInfo.email}</p>
                                     </Box>
@@ -211,7 +251,9 @@ export default function DeveloperView() {
                                         padding: 2,
                                         position: 'relative',
                                         textAlign: 'left',
-                                        overflow: 'hidden',
+                                        overflowY: 'auto',
+                                        maxHeight: '500px',
+                                        minHeight: '100px',
                                     }}
                                 >
                                     <Button
@@ -226,7 +268,7 @@ export default function DeveloperView() {
                                         Edit
                                     </Button>
                                     <h2>Projects</h2>
-                                    {renderContent(developerInfo.projects)}
+                                    {renderProjects()}
                                 </Box>
                             </Box>
                             {isEditing && (
@@ -246,6 +288,7 @@ export default function DeveloperView() {
                             {isEditingProjects && (
                                 <ProjectsEdit
                                     projects={developerInfo.projects}
+                                    files={developerInfo.files}
                                     onSave={handleSaveProjects}
                                     onClose={() => setIsEditingProjects(false)}
                                 />
