@@ -12,8 +12,12 @@ const CustomTextField = styled(TextField)({
     },
 });
 
-function ProjectsEdit({ projects, onSave, onClose }) {
+function ProjectsEdit({ projects, files: initialFiles, onSave, onClose }) {
     const [projectsList, setProjectsList] = useState([]);
+    const [files, setFiles] = useState(initialFiles || []);
+    const [errors, setErrors] = useState({});
+    const [charCounts, setCharCounts] = useState({}); // Track character counts for each project
+    const maxCharacters = 1000; // Set your character limit here
 
     useEffect(() => {
         if (typeof projects === 'string') {
@@ -23,21 +27,44 @@ function ProjectsEdit({ projects, onSave, onClose }) {
                 description: project,
             }));
             setProjectsList(projectArray);
+            setCharCounts(projectArray.reduce((acc, project) => ({ ...acc, [project.id]: project.description.length }), {}));
         } else {
-            setProjectsList(projects);
+            const reIndexedProjects = projects.map((project, index) => ({
+                ...project,
+                id: index,
+                title: `Project ${index + 1}`,
+            }));
+            setProjectsList(reIndexedProjects);
+            setCharCounts(reIndexedProjects.reduce((acc, project) => ({ ...acc, [project.id]: project.description.length }), {}));
         }
     }, [projects]);
 
     const handleProjectChange = (id, newDescription) => {
-        const updatedProjects = projectsList.map((project) =>
-            project.id === id ? { ...project, description: newDescription } : project
-        );
-        setProjectsList(updatedProjects);
+        if (newDescription.length <= maxCharacters) {
+            const updatedProjects = projectsList.map((project) =>
+                project.id === id ? { ...project, description: newDescription } : project
+            );
+            setProjectsList(updatedProjects);
+            setCharCounts((prev) => ({ ...prev, [id]: newDescription.length }));
+            setErrors((prev) => ({ ...prev, [id]: null }));
+        } else {
+            setErrors((prev) => ({ ...prev, [id]: `Description exceeds the maximum length of ${maxCharacters} characters.` }));
+        }
+    };
+
+    const handleFileChange = (id, newFile) => {
+        if (newFile && (newFile.type.startsWith('image/') || newFile.type.startsWith('application/'))) {
+            const updatedFiles = [...files];
+            updatedFiles[id] = newFile;
+            setFiles(updatedFiles);
+        } else {
+            alert('Invalid file type. Please select an image or document.');
+        }
     };
 
     const handleSave = () => {
         const projectDescriptions = projectsList.map((project) => project.description).join('\n\n');
-        onSave({ projects: projectDescriptions });
+        onSave({ projects: projectDescriptions, files });
     };
 
     const handleAddProject = () => {
@@ -52,11 +79,23 @@ function ProjectsEdit({ projects, onSave, onClose }) {
             description: '',
         };
         setProjectsList([...projectsList, newProject]);
+        setFiles([...files, null]); // Add a placeholder for the new project's file
+        setCharCounts((prev) => ({ ...prev, [newProject.id]: 0 })); // Initialize character count for new project
     };
 
     const handleRemoveProject = (id) => {
         const updatedProjects = projectsList.filter((project) => project.id !== id);
-        setProjectsList(updatedProjects);
+        const reIndexedProjects = updatedProjects.map((project, index) => ({
+            ...project,
+            id: index,
+            title: `Project ${index + 1}`,
+        }));
+        setProjectsList(reIndexedProjects);
+        setFiles(files.filter((_, index) => index !== id)); // Remove the file associated with the deleted project
+        setCharCounts((prev) => {
+            const { [id]: _, ...rest } = prev;
+            return rest;
+        }); // Remove the character count for the deleted project
     };
 
     return (
@@ -97,6 +136,13 @@ function ProjectsEdit({ projects, onSave, onClose }) {
                             onChange={(e) => handleProjectChange(project.id, e.target.value)}
                             minRows={4}
                             maxRows={10}
+                            helperText={errors[project.id] || `${maxCharacters - charCounts[project.id]} characters remaining`}
+                            error={Boolean(errors[project.id])}
+                        />
+                        <input
+                            type="file"
+                            onChange={(e) => handleFileChange(project.id, e.target.files[0])}
+                            style={{ marginTop: '10px' }}
                         />
                         <Button
                             variant="contained"
@@ -137,6 +183,7 @@ ProjectsEdit.propTypes = {
             })
         ),
     ]),
+    files: PropTypes.arrayOf(PropTypes.object),
     onSave: PropTypes.func.isRequired,
     onClose: PropTypes.func.isRequired,
 };

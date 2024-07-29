@@ -32,7 +32,8 @@ export default function DeveloperView() {
         email: '',
         description: '',
         projects: '',
-        languages: []
+        languages: [],
+        files: []
     });
 
     useEffect(() => {
@@ -73,7 +74,11 @@ export default function DeveloperView() {
     };
 
     const handleSaveProjects = (newProjects) => {
-        setDeveloperInfo((prev) => ({ ...prev, projects: newProjects.projects }));
+        setDeveloperInfo((prev) => ({ 
+            ...prev, 
+            projects: newProjects.projects, 
+            files: newProjects.files 
+        }));
         setIsEditingProjects(false);
     };
 
@@ -81,6 +86,31 @@ export default function DeveloperView() {
         return typeof text === 'string' ? text.split('\n').map((paragraph, index) => (
             <p key={index} style={{ textAlign: 'left' }}>{paragraph}</p>
         )) : <p>No content available.</p>;
+    };
+
+    const renderProjects = () => {
+        if (!developerInfo.projects || !developerInfo.files) return <p>No projects available.</p>;
+    
+        return developerInfo.projects.split('\n\n').map((project, index) => (
+            <div key={index} style={{ marginBottom: '20px' }}>
+                <div>{project.split('\n').map((line, i) => <p key={i}>{line}</p>)}</div>
+                {developerInfo.files[index] && (
+                    <div>
+                        {developerInfo.files[index].type.startsWith('image/') ? (
+                            <img
+                                src={URL.createObjectURL(developerInfo.files[index])}
+                                alt={`Project ${index + 1}`}
+                                style={{ maxWidth: '100%', height: 'auto' }}
+                            />
+                        ) : (
+                            <a href={URL.createObjectURL(developerInfo.files[index])} download>
+                                {developerInfo.files[index].name}
+                            </a>
+                        )}
+                    </div>
+                )}
+            </div>
+        ));
     };
 
     return (
@@ -211,7 +241,9 @@ export default function DeveloperView() {
                                         padding: 2,
                                         position: 'relative',
                                         textAlign: 'left',
-                                        overflow: 'hidden',
+                                        overflowY: 'auto',
+                                        maxHeight: '500px', // Set a max height to enable scrolling
+                                        minHeight: '100px',
                                     }}
                                 >
                                     <Button
@@ -226,7 +258,7 @@ export default function DeveloperView() {
                                         Edit
                                     </Button>
                                     <h2>Projects</h2>
-                                    {renderContent(developerInfo.projects)}
+                                    {renderProjects()}
                                 </Box>
                             </Box>
                             {isEditing && (
@@ -246,6 +278,7 @@ export default function DeveloperView() {
                             {isEditingProjects && (
                                 <ProjectsEdit
                                     projects={developerInfo.projects}
+                                    files={developerInfo.files}
                                     onSave={handleSaveProjects}
                                     onClose={() => setIsEditingProjects(false)}
                                 />
