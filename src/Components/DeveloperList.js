@@ -88,7 +88,7 @@ function DeveloperList() {
                 component="img"
                 sx={{ width: 160, display: { xs: 'none', sm: 'block' } }}
                 // image='https://www.shutterstock.com/image-vector/default-avatar-profile-icon-social-600nw-1677509740.jpg'
-                image={dev.profileImage}
+                image={dev.profile.profileImage}
               // alt={dev.imageLabel}
               />
               <CardContent sx={{ flex: 1 }}>
