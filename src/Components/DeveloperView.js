@@ -350,7 +350,7 @@ export default function DeveloperView() {
                 <Box
                   ref={projectsRef}
                   sx={{
-                    border: "2px solid grey",
+                    border: "2px solid green",
                     marginTop: 2,
                     display: "flex",
                     flexDirection: "column",

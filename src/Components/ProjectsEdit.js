@@ -114,11 +114,11 @@ function ProjectsEdit({ projects, files: initialFiles, onSave, onClose, currentU
             title: `Project ${index + 1}`,
         }));
         setProjectsList(reIndexedProjects);
-        setFiles(files.filter((_, index) => index !== id)); // Remove the file associated with the deleted project
+        setFiles(files.filter((_, index) => index !== id));
         setCharCounts((prev) => {
             const { [id]: _, ...rest } = prev;
             return rest;
-        }); // Remove the character count for the deleted project
+        });
     };
 
     return (
