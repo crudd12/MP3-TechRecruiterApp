@@ -12,7 +12,7 @@ const CustomTextField = styled(TextField)({
     },
 });
 
-function ProjectsEdit({ projects, files: initialFiles, onSave, onClose }) {
+function ProjectsEdit({ projects, files: initialFiles, onSave, onClose, currentUser }) {
     const [projectsList, setProjectsList] = useState([]);
     const [files, setFiles] = useState(initialFiles || []);
     const [errors, setErrors] = useState({});
@@ -62,9 +62,32 @@ function ProjectsEdit({ projects, files: initialFiles, onSave, onClose }) {
         }
     };
 
-    const handleSave = () => {
+    const handleSave = async () => {
         const projectDescriptions = projectsList.map((project) => project.description).join('\n\n');
-        onSave({ projects: projectDescriptions, files });
+
+        try {
+            const response = await fetch(`http://localhost:3001/developer/update/projects`, {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json',
+                    Accept: "application/json",
+                },
+                body: JSON.stringify({
+                    id: currentUser._id,
+                    projects: projectDescriptions,
+                }),
+            });
+
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
+
+            const data = await response.json();
+            onSave(data);
+            onClose();
+        } catch (error) {
+            console.error('Error saving projects:', error);
+        }
     };
 
     const handleAddProject = () => {

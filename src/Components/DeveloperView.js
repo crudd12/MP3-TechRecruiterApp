@@ -13,7 +13,7 @@ import ProjectsEdit from "./ProjectsEdit";
 import { CurrentUser } from "../Contexts/CurrentUser";
 
 export default function DeveloperView() {
-  const { currentUser, loading } = useContext(CurrentUser);
+  const { currentUser } = useContext(CurrentUser);
   const [mode, setMode] = useState("light");
   const [isEditing, setIsEditing] = useState(false);
   const [isEditingDescription, setIsEditingDescription] = useState(false);
@@ -55,7 +55,7 @@ export default function DeveloperView() {
   useEffect(() => {
     adjustBoxHeight(descriptionRef, developerInfo.description);
     adjustBoxHeight(projectsRef, developerInfo.projects);
-  }, [developerInfo.description, developerInfo.projects]);
+  }, [developerInfo]);
 
   const adjustBoxHeight = (ref, content) => {
     if (ref.current) {
@@ -78,28 +78,30 @@ export default function DeveloperView() {
 
   const handleSave = (updatedUser) => {
     setDeveloperInfo((prev) => ({
-        ...prev,
-        firstName: updatedUser.firstName || prev.firstName,
-        lastName: updatedUser.lastName || prev.lastName,
-        email: updatedUser.email || prev.email,
-        profileImage: updatedUser.profileImage || prev.profileImage,
-        description: updatedUser.description || prev.description,
-        projects: updatedUser.projects || prev.projects,
-        languages: updatedUser.profile?.languages || prev.languages,
+      ...prev,
+      firstName: updatedUser.firstName || prev.firstName,
+      lastName: updatedUser.lastName || prev.lastName,
+      email: updatedUser.email || prev.email,
+      profileImage: updatedUser.profileImage || prev.profileImage,
+      description: updatedUser.description || prev.description,
+      projects: updatedUser.projects || prev.projects,
+      languages: updatedUser.profile?.languages || prev.languages,
     }));
-};
+  };
 
-
-  const handleSaveDescription = (newDescription) => {
+  const handleSaveDescription = (updatedUser) => {
     setDeveloperInfo((prev) => ({
       ...prev,
-      description: newDescription.description,
+      description: updatedUser.profile.description || prev.description,
     }));
     setIsEditingDescription(false);
   };
 
-  const handleSaveProjects = (newProjects) => {
-    setDeveloperInfo((prev) => ({ ...prev, projects: newProjects.projects }));
+  const handleSaveProjects = (updatedUser) => {
+    setDeveloperInfo((prev) => ({
+      ...prev,
+      projects: updatedUser.profile.projects || prev.projects,
+    }));
     setIsEditingProjects(false);
   };
 
@@ -287,6 +289,7 @@ export default function DeveloperView() {
                   descriptionInfo={{ description: developerInfo.description }}
                   onSave={handleSaveDescription}
                   onClose={() => setIsEditingDescription(false)}
+                  currentUser={currentUser}
                 />
               )}
               {isEditingProjects && (
@@ -294,6 +297,7 @@ export default function DeveloperView() {
                   projects={developerInfo.projects}
                   onSave={handleSaveProjects}
                   onClose={() => setIsEditingProjects(false)}
+                  currentUser={currentUser}
                 />
               )}
             </div>
