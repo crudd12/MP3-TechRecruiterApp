@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useRef, useContext } from "react";
+import { Link } from "react-router-dom";
 import CssBaseline from "@mui/material/CssBaseline";
 import Box from "@mui/material/Box";
 import Divider from "@mui/material/Divider";
@@ -39,7 +40,11 @@ export default function DeveloperView() {
 
   useEffect(() => {
     if (currentUser) {
-      // Assuming currentUser contains developerInfo
+      if (currentUser.role !== "Developer") {
+        // Redirect to developer list or display a message if not a developer
+        return;
+      }
+
       setDeveloperInfo({
         firstName: currentUser.firstName,
         lastName: currentUser.lastName,
@@ -117,6 +122,77 @@ export default function DeveloperView() {
     );
   };
 
+  if (!currentUser) {
+    return (
+      <ThemeProvider theme={defaultTheme}>
+        <CssBaseline />
+        <AppAppBar mode={mode} toggleColorMode={toggleColorMode} />
+        <Box
+          id="hero"
+          sx={(theme) => ({
+            width: "100%",
+            backgroundImage:
+              theme.palette.mode === "light"
+                ? "linear-gradient(180deg, #CEE5FD, #FFF)"
+                : `linear-gradient(#02294F, ${alpha("#090E10", 0.0)})`,
+            backgroundSize: "100% 20%",
+            backgroundRepeat: "no-repeat",
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+            height: "100vh",
+            textAlign: "center",
+          })}
+        >
+          <Box>
+            <h2>You are not signed in</h2>
+            <Button variant="contained" component={Link} to="/signin">
+              Sign In
+            </Button>
+          </Box>
+        </Box>
+      </ThemeProvider>
+    );
+  }
+
+  if (currentUser.role !== "Developer") {
+    return (
+      <ThemeProvider theme={defaultTheme}>
+        <CssBaseline />
+        <AppAppBar mode={mode} toggleColorMode={toggleColorMode} />
+        <Box
+          id="hero"
+          sx={(theme) => ({
+            width: "100%",
+            backgroundImage:
+              theme.palette.mode === "light"
+                ? "linear-gradient(180deg, #CEE5FD, #FFF)"
+                : `linear-gradient(#02294F, ${alpha("#090E10", 0.0)})`,
+            backgroundSize: "100% 20%",
+            backgroundRepeat: "no-repeat",
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+            height: "100vh",
+            textAlign: "center",
+          })}
+        >
+          <Box>
+            <h2>You are not a developer</h2>
+            <p>
+              As a recruiter, you are not authorized to view this page. Please
+              go back to the{" "}
+              <Button variant="contained" component={Link} to="/recruiter">
+                Developer Search
+              </Button>
+              .
+            </p>
+          </Box>
+        </Box>
+      </ThemeProvider>
+    );
+  }
+
   return (
     <ThemeProvider theme={defaultTheme}>
       <CssBaseline />
@@ -166,18 +242,43 @@ export default function DeveloperView() {
                       display: "flex",
                       flexDirection: "column",
                       alignItems: "center",
-                      justifyContent: "center",
+                      justifyContent: "flex-start",
                     }}
                   >
-                    <img
-                      src={`https://techrecruiter.onrender.com/${developerInfo.profileImage}`}
-                      alt="Frog Profile"
-                      style={{ width: "100%", height: "auto" }}
-                    />
-                    <h2>
-                      {developerInfo.firstName} {developerInfo.lastName}
-                    </h2>
-                    <p>Contact: {developerInfo.email}</p>
+                    <Box
+                      sx={{
+                        height: "70%",
+                        width: "100%",
+                        position: "relative",
+                        overflow: "hidden", 
+                      }}
+                    >
+                      <img
+                        src={developerInfo.profileImage}
+                        alt="Frog Profile"
+                        style={{
+                          width: "100%",
+                          height: "100%",
+                          objectFit: "cover",
+                        }}
+                      />
+                    </Box>
+                    <Box
+                      sx={{
+                        height: "30%", 
+                        display: "flex",
+                        flexDirection: "column",
+                        alignItems: "center",
+                        justifyContent: "center",
+                        textAlign: "center", 
+                        marginTop: 2, 
+                      }}
+                    >
+                      <h2>
+                        {developerInfo.firstName} {developerInfo.lastName}
+                      </h2>
+                      <p>Contact: {developerInfo.email}</p>
+                    </Box>
                   </Box>
                   <Box
                     sx={{

@@ -10,16 +10,16 @@ import InputAdornment from '@mui/material/InputAdornment';
 import SearchIcon from '@mui/icons-material/Search';
 import { Box } from '@mui/material';
 import { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 
 function DeveloperList() {
-
-
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [query, setQuery] = useState(''); // state for search input
   const [searchTerm, setSearchTerm] = useState(''); // state for search term that triggers data fetch
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchData = async () => {
@@ -52,6 +52,10 @@ function DeveloperList() {
     }
   };
 
+  const handleCardClick = (id) => {
+    navigate(`/developer/${id}`);
+  };
+
   if (loading) {
     return <div>Loading...</div>;
   }
@@ -82,7 +86,7 @@ function DeveloperList() {
 
       {data.map((dev) => (
         <Grid item xs={12} md={6} sx={{ mt: 8 }} key={dev._id}>
-          <CardActionArea component="a" href={`/developer/${dev._id}`}>
+          <CardActionArea onClick={() => handleCardClick(dev._id)}>
             <Card sx={{ display: 'flex', mt: 4, backgroundColor: '#f2f9ff' }}>
               <CardMedia
                 component="img"

@@ -9,6 +9,7 @@ import SignUp from "./Components/SignUp";
 import LandingPage from "./Components/LandingPage";
 import DeveloperView from "./Components/DeveloperView";
 import RecruiterView from "./Components/RecruiterView";
+import RecruiterDeveloperView from "./Components/RecruiterDeveloperView";
 import Footer from "./Components/Footer";
 
 function App() {
@@ -22,8 +23,7 @@ function App() {
             <Route path="/signup" element={<SignUp />} />
             <Route path="/developer" element={<DeveloperView />} />
             <Route path="/recruiter" element={<RecruiterView />} />
-            //testing
-            <Route path="/developer/:id" element={<DeveloperView />} />
+            <Route path="/developer/:id" element={<RecruiterDeveloperView />} />
           </Routes>
           <Footer />
         </Router>

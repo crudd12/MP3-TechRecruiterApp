@@ -7,9 +7,12 @@ import AppAppBar from './AppAppBar'
 import { alpha } from '@mui/material';
 import Container from '@mui/material/Container';
 import DeveloperList from './DeveloperList';
+import { useContext } from 'react';
+import { CurrentUser } from "../Contexts/CurrentUser";
 
 
 export default function RecruiterView() {
+  const { currentUser } = useContext(CurrentUser);
   const [mode, setMode] = React.useState('light');
 
   const defaultTheme = createTheme({ palette: { mode } });
@@ -18,8 +21,34 @@ export default function RecruiterView() {
     setMode((prev) => (prev === 'dark' ? 'light' : 'dark'));
   };
 
-  return (
+  if (currentUser?.role !== 'Recruiter') {
+    return (
+      <ThemeProvider theme={defaultTheme}>
+        <CssBaseline />
+        <AppAppBar mode={mode} toggleColorMode={toggleColorMode} />
+        <Box
+          id="hero"
+          sx={(theme) => ({
+            width: '100%',
+            backgroundImage:
+              theme.palette.mode === 'light'
+                ? 'linear-gradient(180deg, #CEE5FD, #FFF)'
+                : `linear-gradient(#02294F, ${alpha('#090E10', 0.0)})`,
+            backgroundSize: '100% 20%',
+            backgroundRepeat: 'no-repeat',
+            display: 'flex',
+            justifyContent: 'center',
+            alignItems: 'center',
+            height: '100vh'
+          })}
+        >
+          <h2>Access Denied: You are not a recruiter</h2>
+        </Box>
+      </ThemeProvider>
+    );
+  }
 
+  return (
     <ThemeProvider theme={defaultTheme}>
       <CssBaseline />
       <AppAppBar mode={mode} toggleColorMode={toggleColorMode} />
