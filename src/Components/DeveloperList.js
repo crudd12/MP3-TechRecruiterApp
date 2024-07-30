@@ -82,7 +82,7 @@ function DeveloperList() {
 
       {data.map((dev) => (
         <Grid item xs={12} md={6} sx={{ mt: 8 }} key={dev._id}>
-          <CardActionArea component="a" href="/developer">
+          <CardActionArea component="a" href="/developer/:id">
             <Card sx={{ display: 'flex', mt: 4, backgroundColor: '#f2f9ff' }}>
               <CardMedia
                 component="img"
