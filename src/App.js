@@ -22,6 +22,8 @@ function App() {
             <Route path="/signup" element={<SignUp />} />
             <Route path="/developer" element={<DeveloperView />} />
             <Route path="/recruiter" element={<RecruiterView />} />
+            //testing
+            <Route path="/developer/:id" element={<DeveloperView />} />
           </Routes>
           <Footer />
         </Router>
