@@ -13,7 +13,7 @@ import ProjectsEdit from "./ProjectsEdit";
 import { CurrentUser } from "../Contexts/CurrentUser";
 
 export default function DeveloperView() {
-  const { currentUser, loading } = useContext(CurrentUser);
+  const { currentUser } = useContext(CurrentUser);
   const [mode, setMode] = useState("light");
   const [isEditing, setIsEditing] = useState(false);
   const [isEditingDescription, setIsEditingDescription] = useState(false);
@@ -97,8 +97,11 @@ export default function DeveloperView() {
     setIsEditingDescription(false);
   };
 
-  const handleSaveProjects = (newProjects) => {
-    setDeveloperInfo((prev) => ({ ...prev, projects: newProjects.projects }));
+  const handleSaveProjects = (updatedUser) => {
+    setDeveloperInfo((prev) => ({
+      ...prev,
+      projects: updatedUser.profile.projects || prev.projects,
+    }));
     setIsEditingProjects(false);
   };
 
@@ -294,6 +297,7 @@ export default function DeveloperView() {
                   projects={developerInfo.projects}
                   onSave={handleSaveProjects}
                   onClose={() => setIsEditingProjects(false)}
+                  currentUser={currentUser}
                 />
               )}
             </div>

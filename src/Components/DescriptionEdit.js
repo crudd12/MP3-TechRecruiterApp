@@ -39,7 +39,7 @@ function DescriptionEdit({ descriptionInfo, onSave, onClose, currentUser }) {
             }
 
             const data = await response.json();
-            onSave(data); // Update the parent component with the new data
+            onSave(data);
             onClose();
         } catch (error) {
             console.error('Failed to update description:', error);
