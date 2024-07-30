@@ -128,18 +128,43 @@ export default function RecruiterDeveloperView() {
                       display: "flex",
                       flexDirection: "column",
                       alignItems: "center",
-                      justifyContent: "center",
+                      justifyContent: "flex-start",
                     }}
                   >
-                    <img
-                      src={developerInfo.profileImage}
-                      alt="Profile"
-                      style={{ width: "100%", height: "auto" }}
-                    />
-                    <h2>
-                      {developerInfo.firstName} {developerInfo.lastName}
-                    </h2>
-                    <p>Contact: {developerInfo.email}</p>
+                    <Box
+                      sx={{
+                        height: "70%",
+                        width: "100%",
+                        position: "relative",
+                        overflow: "hidden", 
+                      }}
+                    >
+                      <img
+                        src={developerInfo.profileImage}
+                        alt="Frog Profile"
+                        style={{
+                          width: "100%",
+                          height: "100%",
+                          objectFit: "cover",
+                        }}
+                      />
+                    </Box>
+                    <Box
+                      sx={{
+                        height: "30%", 
+                        display: "flex",
+                        flexDirection: "column",
+                        alignItems: "center",
+                        justifyContent: "center",
+                        textAlign: "center", 
+                        marginTop: 2, 
+                      }}
+                    >
+                      <h2>
+                        {developerInfo.firstName} {developerInfo.lastName}
+                      </h2>
+                      <p>Contact: {developerInfo.email}</p>
+                    </Box>
                   </Box>
                   <Box
                     sx={{
