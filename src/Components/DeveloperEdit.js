@@ -17,19 +17,18 @@ function DeveloperEdit({ developerInfo, onSave, onClose, currentUser }) {
 
   const handleSave = async () => {
     try {
-        const updatedInfo = {
-            id: currentUser._id,
-            firstName,
-            lastName,
-            email,
-            profile: {
-              languages: languages.map((lang) =>
-                typeof lang === "string" ? lang : lang.name
-              ),
-            },
-          };
-
-      console.log("Updated Info Being Sent:", updatedInfo);
+      // Construct the updatedInfo object with all fields
+      const updatedInfo = {
+        id: currentUser._id,
+        firstName,
+        lastName,
+        email,
+        profile: {
+          languages: languages.map((lang) =>
+            typeof lang === "string" ? lang : lang.name
+          ),
+        },
+      };
 
       const response = await fetch("http://localhost:3001/developer/update", {
         method: "PUT",
@@ -41,14 +40,15 @@ function DeveloperEdit({ developerInfo, onSave, onClose, currentUser }) {
       });
 
       if (!response.ok) {
-        throw new Error(`HTTP error! Status: ${response.status}`);
+        const errorText = await response.text();
+        throw new Error(
+          `HTTP error! Status: ${response.status}, Details: ${errorText}`
+        );
       }
 
-      const data = await response.json();
-      console.log("Response from Backend:", data);
-
-      onSave(data); // Use the onSave callback to update the parent state with the new data
-      onClose(); // Close the modal
+      const data = await response.json()
+      onSave(data);
+      onClose(); // Closes the modal
     } catch (error) {
       console.error("Error updating profile:", error);
     }

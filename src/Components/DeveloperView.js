@@ -77,16 +77,18 @@ export default function DeveloperView() {
   };
 
   const handleSave = (updatedUser) => {
-    console.log("Updated User Data:", updatedUser);
     setDeveloperInfo((prev) => ({
-      ...prev,
-      ...updatedUser,
-      profile: {
-        ...prev.profile,
-        ...updatedUser.profile, // Make sure to merge the profile updates
-      },
+        ...prev,
+        firstName: updatedUser.firstName || prev.firstName,
+        lastName: updatedUser.lastName || prev.lastName,
+        email: updatedUser.email || prev.email,
+        profileImage: updatedUser.profileImage || prev.profileImage,
+        description: updatedUser.description || prev.description,
+        projects: updatedUser.projects || prev.projects,
+        languages: updatedUser.profile?.languages || prev.languages,
     }));
-  };
+};
+
 
   const handleSaveDescription = (newDescription) => {
     setDeveloperInfo((prev) => ({
