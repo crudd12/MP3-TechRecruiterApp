@@ -55,7 +55,7 @@ export default function DeveloperView() {
   useEffect(() => {
     adjustBoxHeight(descriptionRef, developerInfo.description);
     adjustBoxHeight(projectsRef, developerInfo.projects);
-  }, [developerInfo.description, developerInfo.projects]);
+  }, [developerInfo]);
 
   const adjustBoxHeight = (ref, content) => {
     if (ref.current) {
@@ -78,22 +78,21 @@ export default function DeveloperView() {
 
   const handleSave = (updatedUser) => {
     setDeveloperInfo((prev) => ({
-        ...prev,
-        firstName: updatedUser.firstName || prev.firstName,
-        lastName: updatedUser.lastName || prev.lastName,
-        email: updatedUser.email || prev.email,
-        profileImage: updatedUser.profileImage || prev.profileImage,
-        description: updatedUser.description || prev.description,
-        projects: updatedUser.projects || prev.projects,
-        languages: updatedUser.profile?.languages || prev.languages,
+      ...prev,
+      firstName: updatedUser.firstName || prev.firstName,
+      lastName: updatedUser.lastName || prev.lastName,
+      email: updatedUser.email || prev.email,
+      profileImage: updatedUser.profileImage || prev.profileImage,
+      description: updatedUser.description || prev.description,
+      projects: updatedUser.projects || prev.projects,
+      languages: updatedUser.profile?.languages || prev.languages,
     }));
-};
+  };
 
-
-  const handleSaveDescription = (newDescription) => {
+  const handleSaveDescription = (updatedUser) => {
     setDeveloperInfo((prev) => ({
       ...prev,
-      description: newDescription.description,
+      description: updatedUser.profile.description || prev.description,
     }));
     setIsEditingDescription(false);
   };
@@ -287,6 +286,7 @@ export default function DeveloperView() {
                   descriptionInfo={{ description: developerInfo.description }}
                   onSave={handleSaveDescription}
                   onClose={() => setIsEditingDescription(false)}
+                  currentUser={currentUser}
                 />
               )}
               {isEditingProjects && (

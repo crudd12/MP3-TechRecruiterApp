@@ -13,15 +13,37 @@ const CustomTextField = styled(TextField)({
     },
 });
 
-function DescriptionEdit({ descriptionInfo, onSave, onClose }) {
+function DescriptionEdit({ descriptionInfo, onSave, onClose, currentUser }) {
     const [description, setDescription] = useState(descriptionInfo.description || '');
 
     useEffect(() => {
         setDescription(descriptionInfo.description || '');
     }, [descriptionInfo.description]);
 
-    const handleSave = () => {
-        onSave({ description });
+    const handleSave = async () => {
+        try {
+            const response = await fetch(`http://localhost:3001/developer/update/description`, {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json',
+                    Accept: 'application/json',
+                },
+                body: JSON.stringify({
+                    id: currentUser._id,
+                    description,
+                }),
+            });
+
+            if (!response.ok) {
+                throw new Error(`HTTP error! Status: ${response.status}`);
+            }
+
+            const data = await response.json();
+            onSave(data); // Update the parent component with the new data
+            onClose();
+        } catch (error) {
+            console.error('Failed to update description:', error);
+        }
     };
 
     return (
@@ -78,6 +100,9 @@ DescriptionEdit.propTypes = {
     }).isRequired,
     onSave: PropTypes.func.isRequired,
     onClose: PropTypes.func.isRequired,
+    currentUser: PropTypes.shape({
+        _id: PropTypes.string.isRequired,
+    }).isRequired,
 };
 
 export default DescriptionEdit;
