@@ -27,8 +27,8 @@ function DeveloperList() {
       try {
         // fetch all developers if no search input or filter by language
         const url = searchTerm
-          ? `http://localhost:3001/recruiter/languages?language=${searchTerm}`
-          : 'http://localhost:3001/recruiter/languages';
+          ? `https://techrecruiter.onrender.com/recruiter/languages?language=${searchTerm}`
+          : 'https://techrecruiter.onrender.com/recruiter/languages';
           
         const response = await fetch(url);
         if (!response.ok) {
