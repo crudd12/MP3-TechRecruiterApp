@@ -30,7 +30,7 @@ function DeveloperEdit({ developerInfo, onSave, onClose, currentUser }) {
         },
       };
 
-      const response = await fetch("http://localhost:3001/developer/update", {
+      const response = await fetch("https://techrecruiterapi.onrender.com/developer/update", {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",

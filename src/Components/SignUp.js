@@ -54,7 +54,7 @@ const SignUp = () => {
 
     try {
       const response = await fetch(
-        "http://localhost:3001/authentication/signup",
+        "https://techrecruiterapi.onrender.com/authentication/signup",
         {
           method: "POST",
           headers: {

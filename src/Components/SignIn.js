@@ -39,7 +39,7 @@ const SignIn = () => {
 
     try {
       const response = await fetch(
-        "http://localhost:3001/authentication/signin",
+        "https://techrecruiterapi.onrender.com/authentication/signin",
         {
           method: "POST",
           headers: {
@@ -60,7 +60,7 @@ const SignIn = () => {
 
       // Update currentUser context
       const userResponse = await fetch(
-        "http://localhost:3001/authentication/profile",
+        "https://techrecruiterapi.onrender.com/authentication/profile",
         {
           headers: {
             authToken: result.token,

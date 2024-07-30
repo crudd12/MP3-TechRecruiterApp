@@ -66,7 +66,7 @@ function ProjectsEdit({ projects, files: initialFiles, onSave, onClose, currentU
         const projectDescriptions = projectsList.map((project) => project.description).join('\n\n');
 
         try {
-            const response = await fetch(`http://localhost:3001/developer/update/projects`, {
+            const response = await fetch(`https://techrecruiterapi.onrender.com/developer/update/projects`, {
                 method: 'PUT',
                 headers: {
                     'Content-Type': 'application/json',

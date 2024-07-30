@@ -11,7 +11,7 @@ function CurrentUserProvider({ children }) {
       try {
         const token = localStorage.getItem("authToken");
         const response = await fetch(
-          "http://localhost:3001/authentication/profile",
+          "https://techrecruiterapi.onrender.com/authentication/profile",
           {
             headers: {
               authToken: token,
