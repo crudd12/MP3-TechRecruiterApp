@@ -170,7 +170,7 @@ export default function DeveloperView() {
                     }}
                   >
                     <img
-                      src={`http://localhost:3001/${developerInfo.profileImage}`}
+                      src={`https://techrecruiter.onrender.com/${developerInfo.profileImage}`}
                       alt="Frog Profile"
                       style={{ width: "100%", height: "auto" }}
                     />

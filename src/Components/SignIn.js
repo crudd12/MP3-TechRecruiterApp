@@ -50,12 +50,11 @@ const SignIn = () => {
       );
 
       if (!response.ok) {
-        const errorText = await response.text(); // Get error message from response
+        const errorText = await response.text(); 
         throw new Error(`Network response was not ok: ${errorText}`);
       }
 
       const result = await response.json();
-      console.log("Login successful:", result);
       localStorage.setItem("authToken", result.token);
 
       // Update currentUser context
@@ -83,9 +82,7 @@ const SignIn = () => {
           navigate("/");
         }
       }
-
-      // Redirect to the index page
-      // navigate("/");
+      
     } catch (error) {
       console.error("There was a problem with your fetch operation:", error);
     }

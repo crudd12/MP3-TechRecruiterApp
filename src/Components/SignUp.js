@@ -68,8 +68,7 @@ const SignUp = () => {
         throw new Error("Network response was not ok");
       }
 
-      const result = await response.json();
-      console.log(result);
+      await response.json();
       navigate("/signin");
     } catch (error) {
       console.error("There was a problem with your fetch operation:", error);
