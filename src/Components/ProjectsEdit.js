@@ -16,8 +16,8 @@ function ProjectsEdit({ projects, files: initialFiles, onSave, onClose, currentU
     const [projectsList, setProjectsList] = useState([]);
     const [files, setFiles] = useState(initialFiles || []);
     const [errors, setErrors] = useState({});
-    const [charCounts, setCharCounts] = useState({}); // Track character counts for each project
-    const maxCharacters = 1000; // Set your character limit here
+    const [charCounts, setCharCounts] = useState({});
+    const maxCharacters = 1000;
 
     useEffect(() => {
         if (typeof projects === 'string') {
@@ -102,8 +102,8 @@ function ProjectsEdit({ projects, files: initialFiles, onSave, onClose, currentU
             description: '',
         };
         setProjectsList([...projectsList, newProject]);
-        setFiles([...files, null]); // Add a placeholder for the new project's file
-        setCharCounts((prev) => ({ ...prev, [newProject.id]: 0 })); // Initialize character count for new project
+        setFiles([...files, null]);
+        setCharCounts((prev) => ({ ...prev, [newProject.id]: 0 }));
     };
 
     const handleRemoveProject = (id) => {
