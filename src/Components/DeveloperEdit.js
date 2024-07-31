@@ -4,11 +4,15 @@ import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import TextField from "@mui/material/TextField";
 import Autocomplete from "@mui/material/Autocomplete";
+import Avatar from '@mui/material/Avatar';
 
 function DeveloperEdit({ developerInfo, onSave, onClose, currentUser }) {
   const [firstName, setFirstName] = useState(developerInfo.firstName);
   const [lastName, setLastName] = useState(developerInfo.lastName);
   const [email, setEmail] = useState(developerInfo.email);
+  const [profilePicture, setProfilePicture] = useState(
+    developerInfo.profilePicture || ""
+  );
   const [languages, setLanguages] = useState(developerInfo.languages || []);
 
   useEffect(() => {
@@ -30,14 +34,17 @@ function DeveloperEdit({ developerInfo, onSave, onClose, currentUser }) {
         },
       };
 
-      const response = await fetch("https://techrecruiterapi.onrender.com/developer/update", {
-        method: "PUT",
-        headers: {
-          "Content-Type": "application/json",
-          Accept: "application/json",
-        },
-        body: JSON.stringify(updatedInfo),
-      });
+      const response = await fetch(
+        "https://techrecruiterapi.onrender.com/developer/update",
+        {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+            Accept: "application/json",
+          },
+          body: JSON.stringify(updatedInfo),
+        }
+      );
 
       if (!response.ok) {
         const errorText = await response.text();
@@ -46,11 +53,22 @@ function DeveloperEdit({ developerInfo, onSave, onClose, currentUser }) {
         );
       }
 
-      const data = await response.json()
+      const data = await response.json();
       onSave(data);
       onClose(); // Closes the modal
     } catch (error) {
       console.error("Error updating profile:", error);
+    }
+  };
+
+  const handleFileChange = (event) => {
+    const file = event.target.files[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setProfilePicture(reader.result); // Update state with image URL
+      };
+      reader.readAsDataURL(file); // Read the file as a data URL
     }
   };
 
@@ -85,9 +103,27 @@ function DeveloperEdit({ developerInfo, onSave, onClose, currentUser }) {
           border: "2px solid #000",
           boxShadow: 24,
           p: 4,
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "center",
         }}
       >
         <h2 id="modal-title">Edit Information</h2>
+        <Avatar
+          src={profilePicture}
+          sx={{
+            width: 100,
+            height: 100,
+            borderRadius: "50%",
+            mb: 2,
+          }}
+        />
+        <input
+          type="file"
+          accept="image/*"
+          onChange={handleFileChange}
+          style={{ marginBottom: "16px" }}
+        />
         <TextField
           fullWidth
           margin="normal"
@@ -122,22 +158,27 @@ function DeveloperEdit({ developerInfo, onSave, onClose, currentUser }) {
           value={languages} // Ensure this is an array of strings
           onChange={(event, newValue) => setLanguages(newValue)}
           isOptionEqualToValue={(option, value) => option === value}
-          sx={{ width: 300 }}
+          fullWidth
+          margin="normal"
           renderInput={(params) => (
             <TextField {...params} label="Programming Languages" />
           )}
         />
-        <Button onClick={handleSave} variant="contained" color="primary">
-          Save
-        </Button>
-        <Button
-          onClick={onClose}
-          variant="contained"
-          color="secondary"
-          sx={{ ml: 2 }}
+        <Box
+          sx={{
+            display: "flex",
+            justifyContent: "space-between",
+            width: "100%",
+            mt: 2,
+          }}
         >
-          Cancel
-        </Button>
+          <Button onClick={handleSave} variant="contained" color="primary">
+            Save
+          </Button>
+          <Button onClick={onClose} variant="contained" color="secondary">
+            Cancel
+          </Button>
+        </Box>
       </Box>
     </Modal>
   );
