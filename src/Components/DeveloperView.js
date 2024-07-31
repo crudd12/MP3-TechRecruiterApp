@@ -254,7 +254,7 @@ export default function DeveloperView() {
                       }}
                     >
                       <img
-                        src={developerInfo.profileImage}
+                        src={developerInfo.profileImage || "https://www.shutterstock.com/image-vector/default-avatar-profile-icon-social-600nw-1677509740.jpg"}
                         alt="Frog Profile"
                         style={{
                           width: "100%",
