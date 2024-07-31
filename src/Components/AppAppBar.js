@@ -59,12 +59,19 @@ function AppAppBar({ mode, toggleColorMode }) {
     navigate("/");
   };
 
+  const buttonStyles = {
+    color: "primary",
+    size: "small",
+    sx: { mx: 1 },
+  };
+
   const signinActions = currentUser ? (
     <Button
       color="primary"
       variant="contained"
       size="small"
       onClick={handleLogout}
+      sx={buttonStyles.sx}
     >
       Logout
     </Button>
@@ -76,6 +83,7 @@ function AppAppBar({ mode, toggleColorMode }) {
         size="small"
         component="a"
         href="/signin"
+        sx={buttonStyles.sx}
       >
         Sign in
       </Button>
@@ -85,11 +93,34 @@ function AppAppBar({ mode, toggleColorMode }) {
         size="small"
         component="a"
         href="/signup"
+        sx={buttonStyles.sx}
       >
         Sign up
       </Button>
     </>
   );
+
+  const roleBasedLink = currentUser ? (
+    currentUser.role === "Recruiter" ? (
+      <Button
+        color="primary"
+        variant="text"
+        onClick={() => navigate("/recruiter")}
+        sx={buttonStyles.sx}
+      >
+        Recruiter
+      </Button>
+    ) : (
+      <Button
+        color="primary"
+        variant="text"
+        onClick={() => navigate("/developer")}
+        sx={buttonStyles.sx}
+      >
+        Developer
+      </Button>
+    )
+  ) : null;
 
   return (
     <div>
@@ -149,6 +180,7 @@ function AppAppBar({ mode, toggleColorMode }) {
                     JEDC Recruiting
                   </Typography>
                 </MenuItem>
+                {/* {roleBasedLink} */}
               </Box>
             </Box>
             <Box
@@ -158,7 +190,14 @@ function AppAppBar({ mode, toggleColorMode }) {
                 alignItems: "center",
               }}
             >
-              {loading ? <CircularProgress size={24} /> : signinActions}
+              {loading ? (
+                <CircularProgress size={24} />
+              ) : (
+                <>
+                  {roleBasedLink}
+                  {signinActions}
+                </>
+              )}
             </Box>
             <Box sx={{ display: { sm: "", md: "none" } }}>
               <Button
@@ -216,16 +255,38 @@ function AppAppBar({ mode, toggleColorMode }) {
                       </MenuItem>
                     </>
                   ) : (
-                    <MenuItem sx={{ width: "100%" }}>
-                      <Button
-                        color="primary"
-                        variant="contained"
-                        onClick={handleLogout}
-                        sx={{ width: "100%" }}
-                      >
-                        Logout
-                      </Button>
-                    </MenuItem>
+                    <>
+                      <MenuItem sx={{ width: "100%" }}>
+                        <Button
+                          color="primary"
+                          variant="contained"
+                          onClick={handleLogout}
+                          sx={{ width: "100%" }}
+                        >
+                          Logout
+                        </Button>
+                      </MenuItem>
+                      {roleBasedLink && (
+                        <MenuItem sx={{ width: "100%" }}>
+                          <Button
+                            color="primary"
+                            variant="outlined"
+                            onClick={() =>
+                              navigate(
+                                currentUser.role === "Recruiter"
+                                  ? "/recruiter"
+                                  : "/developer"
+                              )
+                            }
+                            sx={{ width: "100%" }}
+                          >
+                            {currentUser.role === "Recruiter"
+                              ? "Recruiter"
+                              : "Developer"}
+                          </Button>
+                        </MenuItem>
+                      )}
+                    </>
                   )}
                 </Box>
               </Drawer>

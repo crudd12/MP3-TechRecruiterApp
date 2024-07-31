@@ -37,7 +37,6 @@ export default function RecruiterDeveloperView() {
           throw new Error(`HTTP error! status: ${response.status}`);
         }
         const result = await response.json();
-        console.log(result)
         setDeveloperInfo({
             firstName: result.firstName,
             lastName: result.lastName,

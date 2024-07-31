@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef, useContext } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import CssBaseline from "@mui/material/CssBaseline";
 import Box from "@mui/material/Box";
 import Divider from "@mui/material/Divider";
@@ -15,6 +15,7 @@ import { CurrentUser } from "../Contexts/CurrentUser";
 import { Grid } from "@mui/material";
 
 export default function DeveloperView() {
+  const navigate = useNavigate();
   const { currentUser } = useContext(CurrentUser);
   const [mode, setMode] = useState("light");
   const [isEditing, setIsEditing] = useState(false);
@@ -111,6 +112,39 @@ export default function DeveloperView() {
     setIsEditingProjects(false);
   };
 
+  const handleDelete = async () => {
+    if (!currentUser || !currentUser._id) {
+      console.error("No user ID available");
+      return;
+    }
+
+    try {
+      const response = await fetch(
+        `https://techrecruiterapi.onrender.com/developer/delete`,
+        {
+          method: "DELETE",
+          headers: {
+            "Content-Type": "application/json",
+            Accept: "application/json",
+          },
+          body: JSON.stringify({ id: currentUser._id }),
+        }
+      );
+
+      if (!response.ok) {
+        const errorText = await response.text();
+        throw new Error(
+          `HTTP error! Status: ${response.status}, Details: ${errorText}`
+        );
+      }
+
+      localStorage.removeItem("authToken");
+      navigate("/signin");
+    } catch (error) {
+      console.error("Error deleting profile:", error);
+    }
+  };
+
   const renderContent = (text) => {
     return typeof text === "string" ? (
       text.split("\n").map((paragraph, index) => (
@@ -193,7 +227,7 @@ export default function DeveloperView() {
       </ThemeProvider>
     );
   }
-  
+
   return (
     <ThemeProvider theme={defaultTheme}>
       <CssBaseline />
@@ -232,7 +266,7 @@ export default function DeveloperView() {
                   <Grid item xs={12} md={6}>
                     <Box
                       sx={{
-                        height: { xs: 'auto', md: 400 },
+                        height: { xs: "auto", md: 400 },
                         display: "flex",
                         flexDirection: "column",
                         alignItems: "center",
@@ -240,40 +274,34 @@ export default function DeveloperView() {
                       }}
                     >
                       <img
-                        src={developerInfo.profileImage || "https://www.shutterstock.com/image-vector/default-avatar-profile-icon-social-600nw-1677509740.jpg"}
-                        alt="Frog Profile"
+                        src={
+                          developerInfo.profileImage ||
+                          "https://www.shutterstock.com/image-vector/default-avatar-profile-icon-social-600nw-1677509740.jpg"
+                        }
+                        alt="Profile"
                         style={{
                           width: "100%",
                           position: "relative",
                           overflow: "hidden",
                         }}
                       />
-                        <img
-                          src={developerInfo.profileImage}
-                          alt="Profile"
-                          style={{
-                            width: "100%",
-                            height: "100%",
-                            objectFit: "cover",
-                          }}
-                        />
-                      </Box>
-                      <Box
-                        sx={{
-                          height: { xs: 'auto', md: "30%" },
-                          display: "flex",
-                          flexDirection: "column",
-                          alignItems: "center",
-                          justifyContent: "center",
-                          textAlign: "center",
-                          marginTop: 2,
-                        }}
-                      >
-                        <h2>
-                          {developerInfo.firstName} {developerInfo.lastName}
-                        </h2>
-                        <p>Contact: {developerInfo.email}</p>
-                      </Box>
+                    </Box>
+                    <Box
+                      sx={{
+                        height: { xs: "auto", md: "30%" },
+                        display: "flex",
+                        flexDirection: "column",
+                        alignItems: "center",
+                        justifyContent: "center",
+                        textAlign: "center",
+                        marginTop: 2,
+                      }}
+                    >
+                      <h2>
+                        {developerInfo.firstName} {developerInfo.lastName}
+                      </h2>
+                      <p>Contact: {developerInfo.email}</p>
+                    </Box>
                   </Grid>
                   <Grid item xs={12} md={6}>
                     <Box
@@ -397,10 +425,9 @@ export default function DeveloperView() {
                 />
               )}
               <Button
+                onClick={() => handleDelete(currentUser._id)}
                 variant="contained"
-                style={{
-                  backgroundColor: "red",
-                }}
+                color="error"
               >
                 Delete Profile
               </Button>
@@ -411,4 +438,4 @@ export default function DeveloperView() {
       <Divider />
     </ThemeProvider>
   );
-}  
+}
