@@ -20,8 +20,9 @@ export default function RecruiterView() {
   const toggleColorMode = () => {
     setMode((prev) => (prev === 'dark' ? 'light' : 'dark'));
   };
+  
 
-  if (currentUser?.role !== 'Recruiter') {
+  if (currentUser?.role !== 'Recruiter' && currentUser?.role !== 'recruiter') {
     return (
       <ThemeProvider theme={defaultTheme}>
         <CssBaseline />

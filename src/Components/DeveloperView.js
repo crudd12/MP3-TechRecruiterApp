@@ -239,14 +239,15 @@ export default function DeveloperView() {
                         justifyContent: "flex-start",
                       }}
                     >
-                      <Box
-                        sx={{
-                          height: { xs: 'auto', md: "70%" },
+                      <img
+                        src={developerInfo.profileImage || "https://www.shutterstock.com/image-vector/default-avatar-profile-icon-social-600nw-1677509740.jpg"}
+                        alt="Frog Profile"
+                        style={{
                           width: "100%",
                           position: "relative",
                           overflow: "hidden",
                         }}
-                      >
+                      />
                         <img
                           src={developerInfo.profileImage}
                           alt="Profile"
@@ -273,7 +274,6 @@ export default function DeveloperView() {
                         </h2>
                         <p>Contact: {developerInfo.email}</p>
                       </Box>
-                    </Box>
                   </Grid>
                   <Grid item xs={12} md={6}>
                     <Box
