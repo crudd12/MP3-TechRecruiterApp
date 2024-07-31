@@ -6,10 +6,11 @@ import {
   FormControlLabel,
   Checkbox,
 } from "@mui/material";
-import { Link, Grid, Box, Typography, Container } from "@mui/material";
+import { Link, Grid, Box, Typography, Container, CircularProgress } from "@mui/material";
 import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import { useNavigate, Link as RouterLink } from "react-router-dom";
 import { CurrentUser } from "../Contexts/CurrentUser";
+import { useState } from "react";
 
 // function Copyright(props) {
 //   return (
@@ -25,11 +26,14 @@ import { CurrentUser } from "../Contexts/CurrentUser";
 // }
 
 const SignIn = () => {
+  const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
   const { setCurrentUser } = useContext(CurrentUser);
 
   const handleSubmit = async (event) => {
     event.preventDefault();
+    setLoading(true);
+
     const data = new FormData(event.currentTarget);
 
     const userData = {
@@ -86,6 +90,9 @@ const SignIn = () => {
     } catch (error) {
       console.error("There was a problem with your fetch operation:", error);
     }
+      finally {
+        setLoading(false); // Hide loading indicator
+    }
   };
 
   return (
@@ -104,6 +111,18 @@ const SignIn = () => {
         <Typography component="h1" variant="h5">
           Sign in
         </Typography>
+        {loading ? (
+          <Box
+            sx={{
+              display: 'flex',
+              justifyContent: 'center',
+              alignItems: 'center',
+              height: '50vh',
+            }}
+          >
+            <CircularProgress />
+          </Box>
+        ) : (
         <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 }}>
           <TextField
             margin="normal"
@@ -150,6 +169,7 @@ const SignIn = () => {
             </Grid>
           </Grid>
         </Box>
+        )}
       </Box>
       {/* <Copyright sx={{ mt: 8, mb: 4 }} /> */}
     </Container>
