@@ -108,7 +108,6 @@ export default function RecruiterDeveloperView() {
               <Box
                 margin={5}
                 sx={{
-                  border: "2px solid red",
                   padding: 2,
                   position: "relative",
                 }}
@@ -121,7 +120,6 @@ export default function RecruiterDeveloperView() {
                 >
                   <Box
                     sx={{
-                      border: "2px solid grey",
                       height: 400,
                       width: 500,
                       display: "flex",
@@ -167,7 +165,6 @@ export default function RecruiterDeveloperView() {
                   </Box>
                   <Box
                     sx={{
-                      border: "2px solid grey",
                       height: 300,
                       width: 500,
                       display: "flex",
@@ -199,7 +196,7 @@ export default function RecruiterDeveloperView() {
                 <Box
                   ref={descriptionRef}
                   sx={{
-                    border: "2px solid grey",
+                    border: "2px solid lightgrey",
                     marginTop: 2,
                     display: "flex",
                     flexDirection: "column",
@@ -217,7 +214,7 @@ export default function RecruiterDeveloperView() {
                 <Box
                   ref={projectsRef}
                   sx={{
-                    border: "2px solid grey",
+                    border: "2px solid lightgrey",
                     marginTop: 2,
                     display: "flex",
                     flexDirection: "column",
