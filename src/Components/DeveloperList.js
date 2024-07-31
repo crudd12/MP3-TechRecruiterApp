@@ -86,7 +86,7 @@ function DeveloperList() {
 
       {data.map((dev) => (
         <Grid item xs={12} md={6} sx={{ mt: 8 }} key={dev._id}>
-          <CardActionArea onClick={() => handleCardClick(dev._id)}>
+          <CardActionArea component="a" onClick={() => handleCardClick(dev._id)}>
             <Card sx={{ display: 'flex', mt: 4, backgroundColor: '#f2f9ff' }}>
               <CardMedia
                 component="img"
