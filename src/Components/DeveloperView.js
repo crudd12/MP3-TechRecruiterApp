@@ -12,6 +12,7 @@ import DeveloperEdit from "./DeveloperEdit";
 import DescriptionEdit from "./DescriptionEdit";
 import ProjectsEdit from "./ProjectsEdit";
 import { CurrentUser } from "../Contexts/CurrentUser";
+import { Grid } from "@mui/material";
 
 export default function DeveloperView() {
   const { currentUser } = useContext(CurrentUser);
@@ -192,7 +193,7 @@ export default function DeveloperView() {
       </ThemeProvider>
     );
   }
-
+  
   return (
     <ThemeProvider theme={defaultTheme}>
       <CssBaseline />
@@ -223,34 +224,19 @@ export default function DeveloperView() {
               <Box
                 margin={5}
                 sx={{
-                  border: "2px solid red",
                   padding: 2,
                   position: "relative",
                 }}
               >
-                <Box
-                  sx={{
-                    display: "flex",
-                    gap: 2,
-                  }}
-                >
-                  <Box
-                    sx={{
-                      border: "2px solid grey",
-                      height: 400,
-                      width: 500,
-                      display: "flex",
-                      flexDirection: "column",
-                      alignItems: "center",
-                      justifyContent: "flex-start",
-                    }}
-                  >
+                <Grid container spacing={2}>
+                  <Grid item xs={12} md={6}>
                     <Box
                       sx={{
-                        height: "70%",
-                        width: "100%",
-                        position: "relative",
-                        overflow: "hidden", 
+                        height: { xs: 'auto', md: 400 },
+                        display: "flex",
+                        flexDirection: "column",
+                        alignItems: "center",
+                        justifyContent: "flex-start",
                       }}
                     >
                       <img
@@ -258,70 +244,79 @@ export default function DeveloperView() {
                         alt="Frog Profile"
                         style={{
                           width: "100%",
-                          height: "100%",
-                          objectFit: "cover",
+                          position: "relative",
+                          overflow: "hidden",
                         }}
                       />
-                    </Box>
+                        <img
+                          src={developerInfo.profileImage}
+                          alt="Profile"
+                          style={{
+                            width: "100%",
+                            height: "100%",
+                            objectFit: "cover",
+                          }}
+                        />
+                      </Box>
+                      <Box
+                        sx={{
+                          height: { xs: 'auto', md: "30%" },
+                          display: "flex",
+                          flexDirection: "column",
+                          alignItems: "center",
+                          justifyContent: "center",
+                          textAlign: "center",
+                          marginTop: 2,
+                        }}
+                      >
+                        <h2>
+                          {developerInfo.firstName} {developerInfo.lastName}
+                        </h2>
+                        <p>Contact: {developerInfo.email}</p>
+                      </Box>
+                  </Grid>
+                  <Grid item xs={12} md={6}>
                     <Box
                       sx={{
-                        height: "30%", 
+                        height: 300,
                         display: "flex",
                         flexDirection: "column",
                         alignItems: "center",
                         justifyContent: "center",
-                        textAlign: "center", 
-                        marginTop: 2, 
+                        position: "relative",
+                        marginLeft: "auto",
                       }}
                     >
-                      <h2>
-                        {developerInfo.firstName} {developerInfo.lastName}
-                      </h2>
-                      <p>Contact: {developerInfo.email}</p>
+                      <Button
+                        variant="contained"
+                        sx={{
+                          position: "absolute",
+                          top: 10,
+                          right: 10,
+                        }}
+                        onClick={handleEditClick}
+                      >
+                        Edit
+                      </Button>
+                      <Box
+                        sx={{
+                          display: "flex",
+                          flexWrap: "wrap",
+                          justifyContent: "center",
+                          gap: 1,
+                        }}
+                      >
+                        {developerInfo.languages.map((lang, index) => (
+                          <Chip key={index} label={lang} />
+                        ))}
+                      </Box>
                     </Box>
-                  </Box>
-                  <Box
-                    sx={{
-                      border: "2px solid grey",
-                      height: 300,
-                      width: 500,
-                      display: "flex",
-                      flexDirection: "column",
-                      alignItems: "center",
-                      justifyContent: "center",
-                      position: "relative",
-                      marginLeft: "auto",
-                    }}
-                  >
-                    <Button
-                      variant="contained"
-                      sx={{
-                        position: "absolute",
-                        top: 10,
-                        right: 10,
-                      }}
-                      onClick={handleEditClick}
-                    >
-                      Edit
-                    </Button>
-                    <Box
-                      sx={{
-                        display: "flex",
-                        flexWrap: "wrap",
-                        justifyContent: "center",
-                        gap: 1,
-                      }}
-                    >
-                      {developerInfo.languages.map((lang, index) => (
-                        <Chip key={index} label={lang} />
-                      ))}
-                    </Box>
-                  </Box>
-                </Box>
+                  </Grid>
+                </Grid>
                 <Box
                   ref={descriptionRef}
                   sx={{
-                    border: "2px solid grey",
+                    border: "2px solid lightgrey",
                     marginTop: 2,
                     display: "flex",
                     flexDirection: "column",
@@ -350,7 +345,7 @@ export default function DeveloperView() {
                 <Box
                   ref={projectsRef}
                   sx={{
-                    border: "2px solid green",
+                    border: "2px solid lightgrey",
                     marginTop: 2,
                     display: "flex",
                     flexDirection: "column",
@@ -401,6 +396,14 @@ export default function DeveloperView() {
                   currentUser={currentUser}
                 />
               )}
+              <Button
+                variant="contained"
+                style={{
+                  backgroundColor: "red",
+                }}
+              >
+                Delete Profile
+              </Button>
             </div>
           </Box>
         </Container>
@@ -408,4 +411,4 @@ export default function DeveloperView() {
       <Divider />
     </ThemeProvider>
   );
-}
+}  
